@@ -11,4 +11,5 @@ if len(sys.argv) == 1:
     sys.exit(1)
 
 args = parser.parse_args()
-print(args)
+project_path = args.path[0]
+

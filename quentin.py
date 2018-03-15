@@ -3,7 +3,8 @@ import sys
 import argparse
 
 parser = argparse.ArgumentParser(description='A simple and mnml static site generator.')
-parser.add_argument('new', help='Create a new project.')
+parser.add_argument('action', choices=['new'], help='Create a new project.')
+parser.add_argument('path', nargs='*')
 
 if len(sys.argv) == 1:
     parser.print_help()

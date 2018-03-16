@@ -16,4 +16,5 @@ Rendered HTML will be in `build/`
 
 - [ ] Templating
 - [ ] CSS support
-
+- [ ] Implement a simple HTTP server (_later_)
+- [ ] Add example site

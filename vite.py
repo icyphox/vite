@@ -6,6 +6,7 @@ import sys
 import argparse
 import errno
 import pathlib
+import shutil
 
 parser = argparse.ArgumentParser(description='A simple and mnml static site generator.')
 parser.add_argument('action', choices=['new'], help='Create a new project.')
@@ -23,12 +24,13 @@ def create_dirs(path):
         abs_path = pathlib.Path(path).resolve()
         pathlib.Path(path + '/pages').mkdir(parents=True, exist_ok=False)
         pathlib.Path(path + '/build').mkdir(exist_ok=False)
-        make_file(path)
+        cp_make(path)
         print('Created project directory at %s.' % (abs_path))
     except FileExistsError as e:
         print('Error: specified path exists.')
 
 def cp_make(path):
+    shutil.copy('make.py', path)
 
 def main():
     create_dirs(project_path)

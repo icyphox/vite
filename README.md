@@ -13,7 +13,7 @@ $ vite.py build <project-path>
 *OR*
 
 ```console
-$ make.py                    # at the project directory
+$ make.py  # at the project directory
 ```
 Rendered HTML will be in `build/`
 
@@ -22,4 +22,4 @@ Rendered HTML will be in `build/`
 - [ ] Templating
 - [ ] CSS support
 - [ ] Implement a simple HTTP server (_later_)
-- [ ] Add example site
+- [x] Add example site

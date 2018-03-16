@@ -26,6 +26,7 @@ def create_project(path):
         abs_path = pathlib.Path(path).resolve()
         pathlib.Path(path + '/pages').mkdir(parents=True, exist_ok=False)
         pathlib.Path(path + '/build').mkdir(exist_ok=False)
+        pathlib.Path(path + '/templates').mkdir(exist_ok=False)
         shutil.copy('make.py', path)
         print('Created project directory at %s.' % (abs_path))
     except FileExistsError as e:

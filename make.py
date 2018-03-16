@@ -11,5 +11,5 @@ for filename in os.listdir(PAGES_PATH):
     html_file = os.path.splitext(filename)[0] + '.html'
     with open(BUILD_PATH + html_file, 'w') as f:
         f.write(html)
-        print('Rendered %s.' % (html_file))
+        print('Rendered %s' % (html_file))
         

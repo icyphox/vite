@@ -33,8 +33,9 @@ def create_project(path):
 
 def build_project(path):
     try:
+        sys.path.append(path)
         os.chdir(path)
-        import make.py
+        import make
     except FileNotFoundError as e:
         print('Error: no such file or directory: %s' % (path))
 

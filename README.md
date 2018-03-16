@@ -12,4 +12,8 @@ $ make.py
 ```
 Rendered HTML will be in `build/`
 
+## TODO
+[] Templating
+
+[] CSS support
 

@@ -21,6 +21,9 @@ project_path = args.path[0]
 
 try:
     os.makedirs(project_path)
+    os.makedirs(project_path + '/pages')
+    os.makedirs(project_path + '/build')
+    print('Created project directory at %s.' % (project_path))
 except OSError as e:
-    if e.errno != errno.EEXIST
+    if e.errno != errno.EEXIST:
         raise

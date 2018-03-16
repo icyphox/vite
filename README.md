@@ -4,11 +4,16 @@ A simple and mnml static site generator.
 ## Usage
 ```console
 $ vite.py new <project-path>
-$ cd <project-path>
 ```
 Write your Markdown files in `pages/` and  
 ```console
-$ make.py
+$ vite.py build <project-path>
+```
+
+*OR*
+
+```console
+$ make.py                    # at the project directory
 ```
 Rendered HTML will be in `build/`
 

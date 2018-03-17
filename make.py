@@ -2,7 +2,6 @@ from markdown2 import markdown_path
 import os
 import sys
 import jinja2
-import importlib
 
 # import config file
 try:

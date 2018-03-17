@@ -1,5 +1,5 @@
 # Vite
-A simple and mnml static site generator.
+> A simple and mnml static site generator; pronounced as /vit/
 
 ## Usage
 ```console

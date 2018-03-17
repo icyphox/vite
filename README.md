@@ -17,6 +17,17 @@ $ make.py  # at the project directory
 ```
 Rendered HTML will be in `build/`
 
+## Configuration
+Not very sophisticated, but basic configuration can be acheived using `config.py` found in the project directory.  
+Example config:
+```python
+# config.py 
+title = ''
+author = ''
+header = ''
+footer = '' 
+```
+
 ## Templating
 Vite uses Jinja2 templating. A basic example would be: 
 ```html

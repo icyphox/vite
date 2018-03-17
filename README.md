@@ -37,4 +37,4 @@ Vite uses Jinja2 templating. A basic example would be:
 - [ ] CSS support
 - [ ] Implement a simple HTTP server (_later_)
 - [x] Add example site
-- [x] Basic config (`config.py`)
+- [ ]Basic config (`config.py`)

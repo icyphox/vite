@@ -41,7 +41,6 @@ def main():
         html_path = os.path.splitext(os.path.join(BUILD_PATH, page))[0]
         if not os.path.exists(html_path):
             os.mkdir(html_path)
-        html_file = os.path.splitext(page)[0] + '.html'
         output = jinja_render(html_text, template_file)
         with open(os.path.join(html_path, 'index.html'), 'w') as f:
             f.write(output)

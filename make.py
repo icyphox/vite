@@ -35,7 +35,7 @@ def markdown_render(filename):
 
 
 def main():
-    template_file = TEMPL_PATH + '/template.html'
+    template_file = TEMPL_PATH + '/index.html'
     for page in os.listdir(PAGES_PATH):
         html_text = markdown_render(page)
         html_file = os.path.splitext(page)[0] + '.html'

@@ -2,11 +2,11 @@ from markdown2 import markdown_path
 import os
 import sys
 import jinja2
+import importlib
 
 # import config file
 try:
-    sys.path.append(os.getcwd())
-    import config
+    importlib.import_module('config')
 except ImportError:
     print('Error: config.py not found')
 

@@ -5,17 +5,17 @@
 ```console
 $ vite.py new <project-path>
 ```
-Write your Markdown files in `pages/` and  
+Write your Markdown files in the `pages` directory and execute 
 ```console
 $ vite.py build <project-path>
 ```
 
-*OR*
+**OR**
 
 ```console
 $ make.py  # at the project directory
 ```
-Rendered HTML will be in `build/`
+Rendered HTML will be in the `build` directory.
 
 ## Configuration
 Not very sophisticated, but basic configuration can be acheived using `config.py` found in the project directory.  
@@ -41,6 +41,19 @@ Vite uses Jinja2 templating. A basic example would be:
 {{ footer }}
 </footer>
 ```
+
+## Directory tree
+	example
+	├── build
+	│   └── test_page1
+	│       └── index.html
+	├── config.py
+	├── make.py -> /home/icyphox/code/vite/make.py
+	├── pages
+	│   └── test_page1.md
+	└── templates
+    	└── index.html
+
 
 ## TODO
 

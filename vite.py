@@ -4,12 +4,13 @@ Vite - A simple and minimal static site generator.
 
 import sys
 import argparse
-import errno
 import pathlib
 import os
 import importlib
 
-parser = argparse.ArgumentParser(description='A simple and mnml static site generator.')
+parser = argparse.ArgumentParser(description="""
+        A simple and minimal static site generator.
+        """)
 parser.add_argument('action', choices=['new', 'build'])
 # TODO: add help for each action
 parser.add_argument('path', nargs='*')
@@ -21,6 +22,7 @@ if len(sys.argv) == 1:
 args = parser.parse_args()
 project_path = args.path[0]
 
+
 def create_project(path):
     try:
         abs_path = pathlib.Path(path).resolve()
@@ -29,10 +31,12 @@ def create_project(path):
         os.mkdir(os.path.join(path, 'pages'))
         os.mkdir(os.path.join(path, 'templates'))
         create_config(path)
-        os.symlink(os.path.join(cur_path, 'make.py'), os.path.join(abs_path, 'make.py'))
+        os.symlink(os.path.join(cur_path, 'make.py'),
+                   os.path.join(abs_path, 'make.py'))
         print('Created project directory at %s.' % (abs_path))
     except FileExistsError:
         print('Error: specified path exists')
+
 
 def create_config(path):
     with open(path + '/config.py', 'w') as f:
@@ -44,6 +48,7 @@ header = ''
 footer = ''
                """)
 
+
 def build_project(path):
     try:
         os.chdir(path)
@@ -51,11 +56,13 @@ def build_project(path):
     except FileNotFoundError as e:
         print('Error: no such file or directory: %s' % (path))
 
+
 def main():
-    if(args.action == 'new'):
+    if args.action == 'new':
         create_project(project_path)
-    elif(args.action == 'build'):
+    elif args.action == 'build':
         build_project(project_path)
+
 
 if __name__ == "__main__":
     main()

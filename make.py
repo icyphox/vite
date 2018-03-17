@@ -5,11 +5,8 @@ import jinja2
 import importlib
 
 # import config file
-try:
-    sys.path.append(os.getcwd())
-    importlib.import_module('config')
-except ModuleNotFoundError:
-    print('Error: config.py not found')
+sys.path.append(os.getcwd())
+import config
 
 # constants
 PAGES_PATH = 'pages/'

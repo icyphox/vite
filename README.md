@@ -20,14 +20,14 @@ Rendered HTML will be in `build/`
 ## Templating
 Vite uses Jinja2 templating. A basic example would be: 
 ```html
-<title>{{ title }}</title>
+<title> {{ title }} </title>
 
 <body>
-	{{ body }}
+{{ body }}
 </body>
 
 <footer>
-	{{ footer }}
+{{ footer }}
 </footer>
 ```
 

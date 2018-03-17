@@ -7,7 +7,6 @@ import argparse
 import errno
 import pathlib
 import os
-import shutil
 
 parser = argparse.ArgumentParser(description='A simple and mnml static site generator.')
 parser.add_argument('action', choices=['new', 'build'])
@@ -24,10 +23,11 @@ project_path = args.path[0]
 def create_project(path):
     try:
         abs_path = pathlib.Path(path).resolve()
+        cur_path = pathlib.Path('.').resolve()
         pathlib.Path(path + '/pages').mkdir(parents=True, exist_ok=False)
         pathlib.Path(path + '/build').mkdir(exist_ok=False)
         pathlib.Path(path + '/templates').mkdir(exist_ok=False)
-        shutil.copy('make.py', path)
+        os.symlink(cur_path / 'make.py', abs_path / 'make.py')
         print('Created project directory at %s.' % (abs_path))
     except FileExistsError as e:
         print('Error: specified path exists.')

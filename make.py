@@ -6,8 +6,9 @@ import importlib
 
 # import config file
 try:
+    sys.path.append(os.getcwd())
     importlib.import_module('config')
-except ImportError:
+except ModuleNotFoundError:
     print('Error: config.py not found')
 
 # constants

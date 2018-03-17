@@ -1,7 +1,15 @@
 from markdown2 import markdown_path
 from glob import glob
 import os
+import sys
 import jinja2
+
+# import config file
+try:
+    sys.path.append(os.getcwd())
+    import config
+except ImportError:
+    print('Error: config.py not found')
 
 # constants
 PAGES_PATH = 'pages/'
@@ -13,7 +21,7 @@ def jinja_render(html_text, template_file):
     template_loader = jinja2.FileSystemLoader('./')
     env = jinja2.Environment(loader=template_loader)
     template = env.get_template(template_file)
-    output = template.render(title='test', body=html_text)
+    output = template.render(title=config.title, author=config.author, header=config.header, footer=config.footer, body=html_text)
     return output
 
 def markdown_render(filename):

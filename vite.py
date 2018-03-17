@@ -30,8 +30,8 @@ def create_project(path):
         create_config(path)
         os.symlink(cur_path / 'make.py', abs_path / 'make.py')
         print('Created project directory at %s.' % (abs_path))
-    except FileExistsError as e:
-        print('Error: specified path exists.')
+    except FileExistsError:
+        print('Error: specified path exists')
 
 def create_config(path):
     with open(path + '/config.py', 'w') as f:

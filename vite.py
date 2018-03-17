@@ -27,10 +27,21 @@ def create_project(path):
         pathlib.Path(path + '/pages').mkdir(parents=True, exist_ok=False)
         pathlib.Path(path + '/build').mkdir(exist_ok=False)
         pathlib.Path(path + '/templates').mkdir(exist_ok=False)
+        create_config(path)
         os.symlink(cur_path / 'make.py', abs_path / 'make.py')
         print('Created project directory at %s.' % (abs_path))
     except FileExistsError as e:
         print('Error: specified path exists.')
+
+def create_config(path):
+    with open(path + '/config.py', 'w') as f:
+        f.write("""# config.py - Vite's configuration script
+
+title = ''
+author = ''
+header = ''
+footer = ''
+               """)
 
 def build_project(path):
     try:

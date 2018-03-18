@@ -1,3 +1,7 @@
+<h1 align="center">
+	<img width="400" src="https://xix.ph0x.me/vitelogo.png" alt="Vite">
+</h1>
+
 Vite
 ====
 

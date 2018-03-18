@@ -75,8 +75,8 @@ Directory tree
 TODO
 ----
 
--  [x] Templating
--  [ ] CSS support
--  [ ] Implement a simple HTTP server (*later*)
--  [x] Add example site
--  [x] Basic config (``config.py``)
+-  ``[x]`` Templating
+-  ``[ ]`` CSS support
+-  ``[ ]`` Implement a simple HTTP server (*later*)
+-  ``[x]`` Add example site
+-  ``[x]`` Basic config (``config.py``)

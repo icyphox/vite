@@ -6,19 +6,19 @@ Vite
 Usage
 -----
 
-``` {.sourceCode .console}
+```console
 $ vite.py new <project-path>
 ```
 
 Write your Markdown files in the `pages` directory and execute
 
-``` {.sourceCode .console}
+```console
 $ vite.py build <project-path>
 ```
 
 **OR**
 
-``` {.sourceCode .console}
+```console
 $ make.py  # at the project directory
 ```
 
@@ -27,11 +27,11 @@ Rendered HTML will be in the `build` directory.
 Configuration
 -------------
 
-| Not very sophisticated, but basic configuration can be acheived using
+Not very sophisticated, but basic configuration can be acheived using
   `config.py` found in the project directory.
-| Example config:
+Example config:
 
-``` {.sourceCode .python}
+```python
 # config.py 
 title = ''
 author = ''
@@ -44,7 +44,7 @@ Templating
 
 Vite uses Jinja2 templating. A basic example would be:
 
-``` {.sourceCode .html}
+```html
 <title> {{ title }} </title>
 
 <body>

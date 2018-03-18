@@ -2,6 +2,7 @@ from markdown2 import markdown_path
 import os
 import sys
 import jinja2
+import time
 
 # import config file
 try:
@@ -35,6 +36,7 @@ def markdown_render(filename):
 
 
 def main():
+    start = time.process_time()
     template_file = TEMPL_PATH + '/index.html'
     for page in os.listdir(PAGES_PATH):
         html_text = markdown_render(page)
@@ -45,7 +47,8 @@ def main():
         with open(os.path.join(html_path, 'index.html'), 'w') as f:
             f.write(output)
             print('Rendered %s' % (page))
-
+    print('Done in %0.5fs' % (time.process_time() - start))
+        
 
 if __name__ == "__main__":
     main()

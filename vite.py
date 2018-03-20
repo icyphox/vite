@@ -19,8 +19,12 @@ if len(sys.argv) == 1:
     parser.print_help()
     sys.exit(1)
 
-args = parser.parse_args()
-project_path = args.path[0]
+try:
+    args = parser.parse_args()
+    project_path = args.path[0]
+except IndexError:
+    parser.print_help()
+    sys.exit(1)
 
 
 def create_project(path):

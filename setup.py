@@ -14,6 +14,6 @@ setup(
         url = 'https://github.com/icyphox/vite',
         packages = ['vite'],
         install_requires = [
-            'markdown2',
+            'markdown2', 'Jinja2',
         ],
         zip_safe=False)

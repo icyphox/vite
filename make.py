@@ -1,3 +1,5 @@
+#!/usr/bin/env python3
+
 from markdown2 import markdown_path
 import os
 import sys

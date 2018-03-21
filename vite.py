@@ -1,3 +1,5 @@
+#! /usr/bin/env python3
+
 """
 Vite - A simple and minimal static site generator.
 """

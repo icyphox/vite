@@ -54,7 +54,7 @@ title = ''
 author = ''
 header = ''
 footer = '' 
-template = 'index.html' # name of template
+template = 'index.html'  # default is index.html
                """)
 
 

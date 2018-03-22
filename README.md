@@ -38,6 +38,7 @@ title = ''
 author = ''
 header = ''
 footer = '' 
+template = 'index.html'  # default is index.html
 ```
 
 Templating

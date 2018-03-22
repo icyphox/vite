@@ -40,7 +40,7 @@ def create_project(path):
         os.mkdir(os.path.join(path, 'templates'))
         create_config(path)
         os.symlink(os.path.join(cur_path, 'make.py'),
-                   os.path.join(abs_path, 'make.py'))
+                   os.path.join(abs_path, '.make.py'))
         print(good('Created project directory at %s.' % (abs_path)))
     except FileExistsError:
         print(bad('Error: specified path exists.'))

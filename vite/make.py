@@ -13,12 +13,12 @@ try:
     sys.path.append(os.getcwd())
     import config
 except ModuleNotFoundError:
-    print(bad('Error: config.py not found'))
+    print(bad('Error: config.py not found.'))
 
 # constants
 PAGES_PATH = 'pages/'
 BUILD_PATH = 'build/'
-TEMPL_PATH = 'templates'
+TEMPL_PATH = 'templates/'
 
 
 # jinja2
@@ -41,18 +41,21 @@ def markdown_render(filename):
 
 def main():
     start = time.process_time()
-    template_file = TEMPL_PATH + '/index.html'
-    for page in os.listdir(PAGES_PATH):
-        html_text = markdown_render(page)
-        html_path = os.path.splitext(os.path.join(BUILD_PATH, page))[0]
-        if not os.path.exists(html_path):
-            os.mkdir(html_path)
-        output = jinja_render(html_text, template_file)
-        with open(os.path.join(html_path, 'index.html'), 'w') as f:
-            f.write(output)
-            print(run('Rendered %s' % (page)))
-    print(info('Done in %0.5fs' % (time.process_time() - start)))
-        
+    template_file = TEMPL_PATH + config.template
+    try:
+        for page in os.listdir(PAGES_PATH):
+            html_text = markdown_render(page)
+            html_file= os.path.splitext(os.path.join(BUILD_PATH, page))[0]
+            if not os.path.exists(html_file):
+                os.mkdir(html_file)
+            output = jinja_render(html_text, template_file)
+            with open(os.path.join(html_file, 'index.html'), 'w') as f:
+                f.write(output)
+                print(run('Rendered %s.' % (page)))
+            print(info('Done in %0.5fs.' % (time.process_time() - start)))
+    except jinja2.exceptions.TemplateNotFound:
+        print(bad('Error: specified template not found: %s' % (template_file)))
+
 
 if __name__ == "__main__":
     main()

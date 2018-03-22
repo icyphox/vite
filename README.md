@@ -4,10 +4,10 @@
 
 > A simple and mnml static site generator; pronounced as /vit/
 
-![readyish](https://img.shields.io/badge/%F0%9F%A4%B7-Production%20Ready%E2%80%90ish-691d78.svg)
-![doesntsuck](https://img.shields.io/badge/%F0%9F%92%A9-Doesn't%20Suck-a37345.svg)
-![delightful](https://img.shields.io/badge/%F0%9F%8C%88-Delightful-a85fff.svg)
-![build](https://img.shields.io/badge/there%27s%20no%20-build%20running-green.svg)
+[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
+[![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
 
 Usage
 -----

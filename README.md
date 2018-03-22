@@ -17,6 +17,12 @@ Write your Markdown files in the `pages` directory and execute
 $ vite.py build <project-path>
 ```
 
+**OR**
+
+```console
+$ vite.py build .  # to build the current directory
+```
+
 Rendered HTML will be in the `build` directory.
 
 Configuration

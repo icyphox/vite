@@ -4,6 +4,8 @@
 
 > A simple and mnml static site generator; pronounced as /vit/
 
+![readyish](https://img.shields.io/badge/%F0%9F%A4%B7-Production%20Ready%E2%80%90ish-691d78.svg)
+![doesntsuck](https://img.shields.io/badge/%F0%9F%92%A9-Doesn't%20Suck-a37345.svg)
 Usage
 -----
 

@@ -10,6 +10,8 @@ import pathlib
 import os
 import importlib
 
+from hue import *
+
 parser = argparse.ArgumentParser(description="""
         A simple and minimal static site generator.
         """)
@@ -39,9 +41,9 @@ def create_project(path):
         create_config(path)
         os.symlink(os.path.join(cur_path, 'make.py'),
                    os.path.join(abs_path, 'make.py'))
-        print('Created project directory at %s.' % (abs_path))
+        print(good('Created project directory at %s.' % (abs_path)))
     except FileExistsError:
-        print('Error: specified path exists')
+        print(bad('Error: specified path exists'))
 
 
 def create_config(path):
@@ -60,7 +62,7 @@ def build_project(path):
         os.chdir(path)
         importlib.import_module('make')
     except FileNotFoundError as e:
-        print('Error: no such file or directory: %s' % (path))
+        print(bad('Error: no such file or directory: %s' % (path)))
 
 
 def main():

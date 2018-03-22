@@ -1,17 +1,19 @@
 #!/usr/bin/env python3
 
-from markdown2 import markdown_path
 import os
 import sys
 import jinja2
 import time
+
+from markdown2 import markdown_path
+from hue import *
 
 # import config file
 try:
     sys.path.append(os.getcwd())
     import config
 except ModuleNotFoundError:
-    print('Error: config.py not found')
+    print(bad('Error: config.py not found'))
 
 # constants
 PAGES_PATH = 'pages/'
@@ -48,8 +50,8 @@ def main():
         output = jinja_render(html_text, template_file)
         with open(os.path.join(html_path, 'index.html'), 'w') as f:
             f.write(output)
-            print('Rendered %s' % (page))
-    print('Done in %0.5fs' % (time.process_time() - start))
+            print(run('Rendered %s' % (page)))
+    print(info('Done in %0.5fs' % (time.process_time() - start)))
         
 
 if __name__ == "__main__":

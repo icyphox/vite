@@ -43,7 +43,7 @@ def create_project(path):
                    os.path.join(abs_path, 'make.py'))
         print(good('Created project directory at %s.' % (abs_path)))
     except FileExistsError:
-        print(bad('Error: specified path exists'))
+        print(bad('Error: specified path exists.'))
 
 
 def create_config(path):
@@ -53,7 +53,8 @@ def create_config(path):
 title = ''
 author = ''
 header = ''
-footer = ''
+footer = '' 
+template = '' # name of template
                """)
 
 

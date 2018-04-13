@@ -58,10 +58,33 @@ template = 'index.html'  # default is index.html
                """)
 
 
+def create_template(path):
+    with open(os.path.join(path, 'templates', 'index.html'), 'w') as f:
+        f.write("""
+<!DOCTYPE html>
+<html>
+<header>
+	{{ header }}
+	<title>
+		{{ title }}	
+	</title>
+</header>
+
+<body>
+	{{ body }}
+</body>
+
+<footer>
+	{{ footer }}
+	<p> © {{ author }} </p>
+<footer>
+                """)
+
+
 def build_project(path):
     try:
         os.chdir(path)
-        importlib.import_module('make')
+        importlib.import_module('.make')
     except FileNotFoundError as e:
         print(bad('Error: no such file or directory: %s' % (path)))
 

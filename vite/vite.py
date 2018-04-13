@@ -40,7 +40,7 @@ def create_project(path):
         os.mkdir(os.path.join(path, 'templates'))
         create_config(path)
         os.symlink(os.path.join(cur_path, 'make.py'),
-                   os.path.join(abs_path, '.make.py'))
+                   os.path.join(abs_path, 'make.py'))
         create_template(path)
         print(good('Created project directory at %s.' % (abs_path)))
     except FileExistsError:
@@ -87,7 +87,7 @@ def create_template(path):
 def build_project(path):
     try:
         os.chdir(path)
-        importlib.import_module('.make')
+        importlib.import_module('make')
     except FileNotFoundError as e:
         print(bad('Error: no such file or directory: %s' % (path)))
 

@@ -41,9 +41,11 @@ def create_project(path):
         create_config(path)
         os.symlink(os.path.join(cur_path, 'make.py'),
                    os.path.join(abs_path, '.make.py'))
+        create_template(path)
         print(good('Created project directory at %s.' % (abs_path)))
     except FileExistsError:
         print(bad('Error: specified path exists.'))
+
 
 
 def create_config(path):
@@ -78,6 +80,7 @@ def create_template(path):
 	{{ footer }}
 	<p> © {{ author }} </p>
 <footer>
+
                 """)
 
 

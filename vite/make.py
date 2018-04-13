@@ -52,7 +52,7 @@ def main():
             with open(os.path.join(html_file, 'index.html'), 'w') as f:
                 f.write(output)
                 print(run('Rendered %s.' % (page)))
-            print(info('Done in %0.5fs.' % (time.process_time() - start)))
+        print(info('Done in %0.5fs.' % (time.process_time() - start)))
     except jinja2.exceptions.TemplateNotFound:
         print(bad('Error: specified template not found: %s' % (template_file)))
 

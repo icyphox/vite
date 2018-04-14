@@ -14,6 +14,8 @@ try:
     import config
 except ModuleNotFoundError:
     print(bad('Error: config.py not found.'))
+    print(que('Are you sure you\'re in a project directory?'))
+    sys.exit(1)
 
 # constants
 PAGES_PATH = 'pages/'

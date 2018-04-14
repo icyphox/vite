@@ -13,19 +13,13 @@ Usage
 -----
 
 ```console
-$ vite.py new <project-path>
+$ ./vite.py new <project-path>
 ```
 
 Write your Markdown files in the `pages` directory and execute
 
 ```console
-$ vite.py build <project-path>
-```
-
-**OR**
-
-```console
-$ vite.py build .  # to build the current directory
+$ ./make.py   # in project directory
 ```
 
 Rendered HTML will be in the `build` directory.

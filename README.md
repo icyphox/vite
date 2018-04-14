@@ -16,6 +16,7 @@ Clone this repo and:
 ```console
 $ pip3 install -r requirements.txt
 ```
+**NOTE**: Don't delete the cloned repo, since `make.py` is symlinked upon project creation.
 
 Usage
 -----
@@ -23,7 +24,7 @@ Usage
 ```console
 $ ./vite.py new <project-path>
 ```
-Write your Markdown files in the `pages` directory and execute
+Write your Markdown files in the `pages` directory and execute:
 ```console
 $ ./make.py   # in project directory
 ```

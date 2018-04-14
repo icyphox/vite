@@ -6,7 +6,7 @@ import jinja2
 import time
 
 from markdown2 import markdown_path
-from hue import *
+from huepy import *
 
 # import config file
 try:

@@ -9,19 +9,24 @@
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
 
+Installation
+------------
+
+Clone this repo and:
+```console
+$ pip3 install -r requirements.txt
+```
+
 Usage
 -----
 
 ```console
 $ ./vite.py new <project-path>
 ```
-
 Write your Markdown files in the `pages` directory and execute
-
 ```console
 $ ./make.py   # in project directory
 ```
-
 Rendered HTML will be in the `build` directory.
 
 Configuration

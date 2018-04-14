@@ -42,19 +42,23 @@ def markdown_render(filename):
 def main():
     start = time.process_time()
     template_file = TEMPL_PATH + config.template
-    try:
-        for page in os.listdir(PAGES_PATH):
-            html_text = markdown_render(page)
-            html_file= os.path.splitext(os.path.join(BUILD_PATH, page))[0]
-            if not os.path.exists(html_file):
-                os.mkdir(html_file)
-            output = jinja_render(html_text, template_file)
-            with open(os.path.join(html_file, 'index.html'), 'w') as f:
-                f.write(output)
-                print(run('Rendered %s.' % (page)))
-        print(info('Done in %0.5fs.' % (time.process_time() - start)))
-    except jinja2.exceptions.TemplateNotFound:
-        print(bad('Error: specified template not found: %s' % (template_file)))
+    if not os.listdir(PAGES_PATH):
+        print(info(italic('pages') + ' directory is empty. Nothing to build.'))
+        sys.exit(1)
+    else:
+        try:
+            for page in os.listdir(PAGES_PATH):
+                html_text = markdown_render(page)
+                html_file= os.path.splitext(os.path.join(BUILD_PATH, page))[0]
+                if not os.path.exists(html_file):
+                    os.mkdir(html_file)
+                output = jinja_render(html_text, template_file)
+                with open(os.path.join(html_file, 'index.html'), 'w') as f:
+                    f.write(output)
+                    print(run('Rendered %s.' % (page)))
+            print(info('Done in %0.5fs.' % (time.process_time() - start)))
+        except jinja2.exceptions.TemplateNotFound:
+            print(bad('Error: specified template not found: %s' % (template_file)))
 
 
 if __name__ == "__main__":

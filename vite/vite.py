@@ -14,9 +14,10 @@ from huepy import *
 parser = argparse.ArgumentParser(description="""
         A simple and minimal static site generator.
         """)
-parser.add_argument('action', choices=['new', 'build'])
+parser.add_argument('new', nargs='*',help='Create new Vite project.')
+print(parser.parse_args())
 # TODO: add help for each action
-parser.add_argument('path', nargs='*')
+# parser.add_argument('path', nargs='*')
 
 if len(sys.argv) == 1:
     parser.print_help()
@@ -24,7 +25,7 @@ if len(sys.argv) == 1:
 
 try:
     args = parser.parse_args()
-    project_path = args.path[0]
+    project_path = args.new[1]
 except IndexError:
     parser.print_help()
     sys.exit(1)
@@ -83,20 +84,9 @@ def create_template(path):
                 """)
 
 
-def build_project(path):
-    try:
-        os.chdir(path)
-        import make
-    except FileNotFoundError:
-        print(bad('Error: no such file or directory: %s' % (path)))
-
-
 def main():
-    if args.action == 'new':
+    if args.new:
         create_project(project_path)
-    elif args.action == 'build':
-        build_project(project_path)
-
 
 if __name__ == "__main__":
     main()

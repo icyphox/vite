@@ -8,9 +8,8 @@ import sys
 import argparse
 import pathlib
 import os
-import importlib
 
-from hue import *
+from huepy import *
 
 parser = argparse.ArgumentParser(description="""
         A simple and minimal static site generator.
@@ -87,8 +86,8 @@ def create_template(path):
 def build_project(path):
     try:
         os.chdir(path)
-        importlib.import_module('make')
-    except FileNotFoundError as e:
+        import make
+    except FileNotFoundError:
         print(bad('Error: no such file or directory: %s' % (path)))
 
 

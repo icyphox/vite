@@ -30,6 +30,12 @@ $ ./make.py   # in project directory
 ```
 Rendered HTML will be in the `build` directory.
 
+Finally, run:
+```console
+$ ./make.py serve
+```
+to serve the contents of the `build` directory.
+
 Configuration
 -------------
 

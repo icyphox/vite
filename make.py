@@ -5,6 +5,8 @@ import sys
 import jinja2
 import time
 import argparse
+import http.server
+import socketserver
 
 from markdown2 import markdown_path
 from huepy import *
@@ -14,6 +16,12 @@ usage = lightblue('make.py') + ' [serve]'
 help_txt = 'Serve pages from the ' + italic('build') + ' directory.'
 parser = argparse.ArgumentParser(description=desc, usage=usage)
 parser.add_argument('serve', nargs='*', help=help_txt)
+
+try:
+    args = parser.parse_args()
+except IndexError:
+    parser.print_help()
+    sys.exit(1)
 
 # import config file
 try:
@@ -30,6 +38,7 @@ PAGES_PATH = 'pages/'
 BUILD_PATH = 'build/'
 TEMPL_PATH = 'templates/'
 TEMPL_FILE = TEMPL_PATH + config.template
+PORT = 1911
 
 
 # jinja2
@@ -61,8 +70,23 @@ def html_gen():
             f.write(output)
             print(run('Rendered %s.' % (page)))   
 
+def server():
+    handler = http.server.SimpleHTTPRequestHandler
+    try:
+        with socketserver.TCPServer(('', PORT), handler) as httpd:
+            print(run(f'Serving pages at http://localhost:{PORT}'))
+            print(white('Ctrl+C') + ' to stop.')
+            httpd.serve_forever()
+    except KeyboardInterrupt:
+        print(info('Stopping server.'))
+        sys.exit(1)
 
 def main():
+    if args.serve:
+        server()
+    else:
+        parser.print_help()
+
     start = time.process_time()
     TEMPL_FILE = TEMPL_PATH + config.template
     if not os.listdir(PAGES_PATH):

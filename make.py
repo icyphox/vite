@@ -73,7 +73,7 @@ def main():
            html_gen()
            print(info('Done in %0.5fs.' % (time.process_time() - start)))
         except jinja2.exceptions.TemplateNotFound:
-            print(bad('Error: specified template not found: %s' % (TEMPL_FILE)))
+           print(bad('Error: specified template not found: %s' % (TEMPL_FILE)))
 
 
 if __name__ == "__main__":

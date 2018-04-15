@@ -55,8 +55,10 @@ template = 'index.html'  # default is index.html
 Templating
 ----------
 
-Vite uses Jinja2 templating. A basic example would be:
+Vite uses Jinja2 templating.  
+**NOTE**: Stylesheets, images and JS can be accessed from the `static` folder.
 
+A basic example would be:
 ```html
 <title> {{ title }} </title>
 
@@ -74,12 +76,10 @@ Directory tree
 
     example
     ├── build
-    │   └── test_page1
-    │       └── index.html
     ├── config.py
     ├── make.py -> /home/icyphox/code/vite/make.py
     ├── pages
-    │   └── test_page1.md
+    ├── static
     └── templates
         └── index.html
 

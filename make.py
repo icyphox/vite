@@ -66,6 +66,7 @@ def html_gen():
             f.write(output)
             print(run('Rendered %s.' % (page)))   
 
+
 def server():
     handler = http.server.SimpleHTTPRequestHandler
     os.chdir(BUILD_PATH)
@@ -77,7 +78,7 @@ def server():
             httpd.serve_forever()
     except KeyboardInterrupt:
         print(info('Stopping server.'))
-        http.server_close()
+        httpd.server_close()
         sys.exit(1)
 
 def main():

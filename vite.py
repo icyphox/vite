@@ -45,7 +45,6 @@ def create_project(path):
         print(bad('Error: specified path exists.'))
 
 
-
 def create_config(path):
     with open(path + '/config.py', 'w') as f:
         f.write("""# config.py - Vite's configuration script
@@ -85,6 +84,7 @@ def create_template(path):
 def main():
     if args.new:
         create_project(project_path)
+
 
 if __name__ == "__main__":
     main()

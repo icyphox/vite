@@ -64,7 +64,7 @@ def html_gen():
         output = jinja_render(html_text, TEMPL_FILE)
         with open(os.path.join(html_file, 'index.html'), 'w') as f:
             f.write(output)
-            print(run('Rendered %s.' % (page)))   
+            print(run('Rendered %s.' % (page)))
 
 
 def server():
@@ -81,6 +81,7 @@ def server():
         httpd.server_close()
         sys.exit(1)
 
+
 def main():
     if args.serve:
         server()
@@ -91,10 +92,10 @@ def main():
         sys.exit(1)
     else:
         try:
-           html_gen()
-           print(good('Done in %0.5fs.' % (time.process_time() - start)))
+            html_gen()
+            print(good('Done in %0.5fs.' % (time.process_time() - start)))
         except jinja2.exceptions.TemplateNotFound:
-           print(bad('Error: specified template not found: %s' % (TEMPL_FILE)))
+            print(bad('Error: specified template not found: %s' % TEMPL_FILE))
 
 
 if __name__ == "__main__":

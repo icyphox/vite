@@ -87,7 +87,7 @@ TODO
 ----
 
 - [x] Templating
-- [ ] CSS support
+- [x] CSS support
 - [x] Implement a simple HTTP server (*later*)
 - [x] Add example site
 - [x] Basic config (`config.py`)

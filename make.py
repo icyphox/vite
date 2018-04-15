@@ -4,9 +4,16 @@ import os
 import sys
 import jinja2
 import time
+import argparse
 
 from markdown2 import markdown_path
 from huepy import *
+
+desc = green('Script to build and serve Vite projects.')
+usage = lightblue('make.py') + ' [serve]'
+help_txt = 'Serve pages from the ' + italic('build') + ' directory.'
+parser = argparse.ArgumentParser(description=desc, usage=usage)
+parser.add_argument('serve', nargs='*', help=help_txt)
 
 # import config file
 try:
@@ -15,6 +22,7 @@ try:
 except ModuleNotFoundError:
     print(bad('Error: config.py not found.'))
     print(que('Are you sure you\'re in a project directory?'))
+    parser.print_help()
     sys.exit(1)
 
 # constants

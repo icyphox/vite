@@ -77,6 +77,7 @@ def server():
             httpd.serve_forever()
     except KeyboardInterrupt:
         print(info('Stopping server.'))
+        http.server_close()
         sys.exit(1)
 
 def main():

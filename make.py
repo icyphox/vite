@@ -17,11 +17,7 @@ help_txt = 'Serve pages from the ' + italic('build') + ' directory.'
 parser = argparse.ArgumentParser(description=desc, usage=usage)
 parser.add_argument('serve', nargs='*', help=help_txt)
 
-try:
-    args = parser.parse_args()
-except IndexError:
-    parser.print_help()
-    sys.exit(1)
+args = parser.parse_args()
 
 # import config file
 try:
@@ -72,9 +68,11 @@ def html_gen():
 
 def server():
     handler = http.server.SimpleHTTPRequestHandler
+    os.chdir(BUILD_PATH)
+    print(os.getcwd())
     try:
         with socketserver.TCPServer(('', PORT), handler) as httpd:
-            print(run(f'Serving pages at http://localhost:{PORT}'))
+            print(run(f'Serving the {italic("build")} directory at http://localhost:{PORT}'))
             print(white('Ctrl+C') + ' to stop.')
             httpd.serve_forever()
     except KeyboardInterrupt:
@@ -84,9 +82,6 @@ def server():
 def main():
     if args.serve:
         server()
-    else:
-        parser.print_help()
-
     start = time.process_time()
     TEMPL_FILE = TEMPL_PATH + config.template
     if not os.listdir(PAGES_PATH):
@@ -95,7 +90,7 @@ def main():
     else:
         try:
            html_gen()
-           print(info('Done in %0.5fs.' % (time.process_time() - start)))
+           print(good('Done in %0.5fs.' % (time.process_time() - start)))
         except jinja2.exceptions.TemplateNotFound:
            print(bad('Error: specified template not found: %s' % (TEMPL_FILE)))
 

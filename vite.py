@@ -14,7 +14,7 @@ from huepy import *
 usage = lightblue('vite.py') + ' new [PATH]' 
 desc = green('A simple and minimal static site generator.')
 parser = argparse.ArgumentParser(description=desc, usage=usage)
-parser.add_argument('new', nargs='*',help='Create new Vite project.')
+parser.add_argument('new', nargs='*', help='Create new Vite project.')
 
 if len(sys.argv) == 1:
     parser.print_help()

@@ -11,14 +11,10 @@ import os
 
 from huepy import *
 
-usage = """
-        vite.py new [PATH]
-        """
-parser = argparse.ArgumentParser(description="""
-        A simple and minimal static site generator.
-        """, usage=usage)
-parser.add_argument('new', nargs='*',help='Create new Vite project.')
-# TODO: add help for each action
+usage = blue('vite.py') + ' new [PATH]' 
+desc = green('A simple and minimal static site generator.')
+parser = argparse.ArgumentParser(description=desc, usage=usage)
+parser.add_argument(yellow('new'), nargs='*',help='Create new Vite project.')
 
 if len(sys.argv) == 1:
     parser.print_help()

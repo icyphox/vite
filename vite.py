@@ -11,7 +11,7 @@ import os
 
 from huepy import *
 
-usage = blue('vite.py') + ' new [PATH]' 
+usage = lightblue('vite.py') + ' new [PATH]' 
 desc = green('A simple and minimal static site generator.')
 parser = argparse.ArgumentParser(description=desc, usage=usage)
 parser.add_argument(yellow('new'), nargs='*',help='Create new Vite project.')

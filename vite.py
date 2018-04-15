@@ -35,6 +35,7 @@ def create_project(path):
         os.makedirs(os.path.join(path, 'build'))
         os.mkdir(os.path.join(path, 'pages'))
         os.mkdir(os.path.join(path, 'templates'))
+        os.mkdir(os.path.join(path, 'static'))
         create_config(path)
         os.symlink(os.path.join(cur_path, 'make.py'),
                    os.path.join(abs_path, 'make.py'))

@@ -7,6 +7,8 @@ import time
 import argparse
 import http.server
 import socketserver
+import frontmatter
+import glob
 
 from markdown2 import markdown_path
 from huepy import *
@@ -39,11 +41,12 @@ PORT = 1911
 
 
 # jinja2
-def jinja_render(html_text, TEMPL_FILE):
+def jinja_render(html_text, front, TEMPL_FILE):
     template_loader = jinja2.FileSystemLoader('./')
     env = jinja2.Environment(loader=template_loader)
     template = env.get_template(TEMPL_FILE)
-    output = template.render(title=config.title,
+    # title from `config.py` or frontmatter
+    output = template.render(title=front['title'],
                              author=config.author,
                              header=config.header,
                              footer=config.footer,
@@ -56,13 +59,20 @@ def markdown_render(filename):
     return html_text
 
 
+def get_frontmatter(path):
+    with open(path, 'r') as f:
+        front = frontmatter.load(f) 
+    return front
+    
+
 def html_gen():
     for page in os.listdir(PAGES_PATH):
         html_text = markdown_render(page)
         html_file= os.path.splitext(os.path.join(BUILD_PATH, page))[0]
+        front = get_frontmatter(os.path.join(PAGES_PATH, page))
         if not os.path.exists(html_file):
             os.mkdir(html_file)
-        output = jinja_render(html_text, TEMPL_FILE)
+        output = jinja_render(html_text, front, TEMPL_FILE)
         with open(os.path.join(html_file, 'index.html'), 'w') as f:
             f.write(output)
             print(run('Rendered %s.' % (page)))

@@ -2,3 +2,4 @@ Jinja2==2.10
 markdown2==2.3.5
 MarkupSafe==1.0
 huepy
+python-frontmatter==0.4.2

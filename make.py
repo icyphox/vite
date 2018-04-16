@@ -10,6 +10,7 @@ import socketserver
 
 from markdown2 import markdown_path
 from huepy import *
+from distutils.dir_util import copy_tree
 
 desc = green('Script to build and serve Vite projects.')
 usage = lightblue('make.py') + ' [serve]'
@@ -70,7 +71,6 @@ def html_gen():
 def server():
     handler = http.server.SimpleHTTPRequestHandler
     os.chdir(BUILD_PATH)
-    print(os.getcwd())
     try:
         with socketserver.TCPServer(('', PORT), handler) as httpd:
             print(run(f'Serving the {italic("build")} directory at http://localhost:{PORT}'))
@@ -85,17 +85,21 @@ def server():
 def main():
     if args.serve:
         server()
-    start = time.process_time()
-    TEMPL_FILE = TEMPL_PATH + config.template
-    if not os.listdir(PAGES_PATH):
-        print(info(italic('pages') + ' directory is empty. Nothing to build.'))
-        sys.exit(1)
     else:
-        try:
-            html_gen()
-            print(good('Done in %0.5fs.' % (time.process_time() - start)))
-        except jinja2.exceptions.TemplateNotFound:
-            print(bad('Error: specified template not found: %s' % TEMPL_FILE))
+        start = time.process_time()
+        TEMPL_FILE = TEMPL_PATH + config.template
+        if not os.listdir(PAGES_PATH):
+            print(info(italic('pages') + ' directory is empty. Nothing to build.'))
+            sys.exit(1)
+        else:
+            try:
+                html_gen()
+                if not os.path.exists(os.path.join(BUILD_PATH, 'static')):
+                    os.mkdir(os.path.join(BUILD_PATH, 'static'))
+                copy_tree('static', os.path.join(BUILD_PATH, 'static'))
+                print(good('Done in %0.5fs.' % (time.process_time() - start)))
+            except jinja2.exceptions.TemplateNotFound:
+                print(bad('Error: specified template not found: %s' % TEMPL_FILE))
 
 
 if __name__ == "__main__":

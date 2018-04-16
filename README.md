@@ -60,6 +60,8 @@ Vite uses Jinja2 templating.
 
 A basic example would be:
 ```html
+<link rel="stylesheet" href="../static/sakura-earthy.css">
+
 <title> {{ title }} </title>
 
 <body>

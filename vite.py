@@ -11,23 +11,6 @@ import os
 
 from huepy import *
 
-usage = lightblue('vite.py') + ' new [PATH]' 
-desc = green('A simple and minimal static site generator.')
-parser = argparse.ArgumentParser(description=desc, usage=usage)
-parser.add_argument('new', nargs='*', help='Create new Vite project.')
-
-if len(sys.argv) == 1:
-    parser.print_help()
-    sys.exit(1)
-
-try:
-    args = parser.parse_args()
-    project_path = args.new[1]
-except IndexError:
-    parser.print_help()
-    sys.exit(1)
-
-
 def create_project(path):
     try:
         abs_path = pathlib.Path(path).resolve()
@@ -81,10 +64,23 @@ def create_template(path):
                 """)
 
 
-def main():
+if __name__ == "__main__":
+    usage = lightblue('vite.py') + ' new [PATH]' 
+    desc = green('A simple and minimal static site generator.')
+    parser = argparse.ArgumentParser(description=desc, usage=usage)
+    parser.add_argument('new', nargs='*', help='Create new Vite project.')
+    
+    if len(sys.argv) == 1:
+        parser.print_help()
+        sys.exit(1)
+    
+    try:
+        args = parser.parse_args()
+        project_path = args.new[1]
+    except IndexError:
+        parser.print_help()
+        sys.exit(1)
+
     if args.new:
         create_project(project_path)
 
-
-if __name__ == "__main__":
-    main()

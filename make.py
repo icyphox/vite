@@ -12,32 +12,6 @@ from markdown2 import markdown_path
 from huepy import *
 from distutils.dir_util import copy_tree
 
-desc = green('Script to build and serve Vite projects.')
-usage = lightblue('make.py') + ' [serve]'
-help_txt = 'Serve pages from the ' + italic('build') + ' directory.'
-parser = argparse.ArgumentParser(description=desc, usage=usage)
-parser.add_argument('serve', nargs='*', help=help_txt)
-
-args = parser.parse_args()
-
-# import config file
-try:
-    sys.path.append(os.getcwd())
-    import config
-except ModuleNotFoundError:
-    print(bad('Error: config.py not found.'))
-    print(que('Are you sure you\'re in a project directory?'))
-    parser.print_help()
-    sys.exit(1)
-
-# constants
-PAGES_PATH = 'pages/'
-BUILD_PATH = 'build/'
-TEMPL_PATH = 'templates/'
-TEMPL_FILE = TEMPL_PATH + config.template
-PORT = 1911
-
-
 # jinja2
 def jinja_render(html_text, TEMPL_FILE):
     template_loader = jinja2.FileSystemLoader('./')
@@ -103,4 +77,29 @@ def main():
 
 
 if __name__ == "__main__":
+    desc = green('Script to build and serve Vite projects.')
+    usage = lightblue('make.py') + ' [serve]'
+    help_txt = 'Serve pages from the ' + italic('build') + ' directory.'
+    parser = argparse.ArgumentParser(description=desc, usage=usage)
+    parser.add_argument('serve', nargs='*', help=help_txt)
+    
+    args = parser.parse_args()
+    
+    # import config file
+    try:
+        sys.path.append(os.getcwd())
+        import config
+    except ModuleNotFoundError:
+        print(bad('Error: config.py not found.'))
+        print(que('Are you sure you\'re in a project directory?'))
+        parser.print_help()
+        sys.exit(1)
+
+    # constants
+    PAGES_PATH = 'pages/'
+    BUILD_PATH = 'build/'
+    TEMPL_PATH = 'templates/'
+    TEMPL_FILE = TEMPL_PATH + config.template
+    PORT = 1911
+
     main()

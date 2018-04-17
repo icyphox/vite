@@ -29,7 +29,7 @@ def create_project(path):
 
 
 def create_config(path):
-    with open(path + '/config.py', 'w') as f:
+    with open(os.path.join(path, 'config.py'), 'w') as f:
         f.write("""# config.py - Vite's configuration script
 
 title = ''

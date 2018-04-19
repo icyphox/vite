@@ -58,7 +58,7 @@ def create_template(path):
 
 <footer>
 	{{ footer }}
-	<p> © {{ author }} </p>
+	<p> {{ author }} </p>
 <footer>
 
                 """)

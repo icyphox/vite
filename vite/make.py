@@ -87,9 +87,11 @@ def server():
 
 
 def main():
+    args = parser().parse_args()
+
     if args.serve:
         server()
-    else:
+    elif args.build:
         start = time.process_time()
         TEMPL_FILE = TEMPL_PATH + config.template
         if not os.listdir(PAGES_PATH):
@@ -104,32 +106,10 @@ def main():
                 print(good('Done in %0.5fs.' % (time.process_time() - start)))
             except jinja2.exceptions.TemplateNotFound:
                 print(bad('Error: specified template not found: %s' % TEMPL_FILE))
+    else:
+        parser().print_help()
+        sys.exit(1)
 
 
 if __name__ == "__main__":
-    desc = green('Script to build and serve Vite projects.')
-    usage = lightblue('make.py') + ' [serve]'
-    help_txt = 'Serve pages from the ' + italic('build') + ' directory.'
-    parser = argparse.ArgumentParser(description=desc, usage=usage)
-    parser.add_argument('serve', nargs='*', help=help_txt)
-    
-    args = parser.parse_args()
-    
-    # import config file
-    try:
-        sys.path.append(os.getcwd())
-        import config
-    except ModuleNotFoundError:
-        print(bad('Error: config.py not found.'))
-        print(que('Are you sure you\'re in a project directory?'))
-        parser.print_help()
-        sys.exit(1)
-
-    # constants
-    PAGES_PATH = 'pages/'
-    BUILD_PATH = 'build/'
-    TEMPL_PATH = 'templates/'
-    TEMPL_FILE = TEMPL_PATH + config.template
-    PORT = 1911
-
     main()

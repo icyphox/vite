@@ -5,9 +5,12 @@ setup(
         version='1.0.0',
         description='A simple and minimal static site generator.',
         packages=['vite'],
+        install_requires=[
+            'markdown2', 'Jinja2', 'huepy',
+            ],
         entry_points={
             'console_scripts': [
-                'vite = vite.make:main',
+                'vite = vite.cli:main',
                 ]
             },
 )

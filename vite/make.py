@@ -12,6 +12,36 @@ from markdown2 import markdown_path
 from huepy import *
 from distutils.dir_util import copy_tree
 
+# import config file
+try:
+    sys.path.append(os.getcwd())
+    import config
+except ModuleNotFoundError:
+    print(bad('Error: config.py not found.'))
+    print(que('Are you sure you\'re in a project directory?'))
+    sys.exit(1)
+
+
+# constants
+PAGES_PATH = 'pages/'
+BUILD_PATH = 'build/'
+TEMPL_PATH = 'templates/'
+TEMPL_FILE = TEMPL_PATH + config.template
+PORT = 1911
+
+
+# argument parsing
+def parser():
+    desc = green('A simple and minimal static site generator.')
+    usage = lightblue('vite') + ' [build | serve]'
+    serve_help = 'Serve pages from the ' + italic('build') + ' directory.'
+    build_help = 'Build pages from the ' + italic('pages') + ' directory.'
+    parser = argparse.ArgumentParser(description=desc, usage=usage)
+    parser.add_argument('serve', nargs='*', help=serve_help)
+    parser.add_argument('build', nargs='*', help=build_help)
+    return parser
+
+
 # jinja2
 def jinja_render(html_text, TEMPL_FILE):
     template_loader = jinja2.FileSystemLoader('./')

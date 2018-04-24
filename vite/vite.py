@@ -17,12 +17,19 @@ from huepy import *
 from distutils.dir_util import copy_tree
 from vite import vite
 
+try:
+    sys.path.append(os.getcwd())
+    import config
+except FileNotFoundError:
+    print(bad('Error: config.py not found'))
+
 # constants
 PAGES_PATH = 'pages/'
 BUILD_PATH = 'build/'
 TEMPL_PATH = 'templates/'
 TEMPL_FILE = TEMPL_PATH + config.template
 PORT = 1911
+
 
 def create_project(path):
     try:
@@ -76,16 +83,6 @@ def create_template(path):
 
                 """)
 
-# argument parsing
-#def parser():
-#    desc = green('A simple and minimal static site generator.')
-#    usage = lightblue('vite') + ' [new | build | serve]'
-#    parser = argparse.ArgumentParser(description=desc, usage=usage)
-#    parser.add_argument('action', choices=['new', 'build', 'serve'], help='Commands to create, build and serve your project.')
-#    parser.add_argument('path', nargs='*')
-#    return parser
-
-
 # jinja2
 def jinja_render(html_text, TEMPL_FILE):
     template_loader = jinja2.FileSystemLoader('./')
@@ -118,7 +115,7 @@ def html_gen():
 
 def server():
     handler = http.server.SimpleHTTPRequestHandler
-    os.chdir(os.path.join(os.getcwd(), BUILD_PATH)
+    os.chdir(os.path.join(os.getcwd(), BUILD_PATH))
     try:
         with socketserver.TCPServer(('', PORT), handler) as httpd:
             print(run(f'Serving the {italic("build")} directory at http://localhost:{PORT}'))

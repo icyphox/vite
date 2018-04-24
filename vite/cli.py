@@ -1,6 +1,6 @@
 import argparse
 import os
-
+import sys
 from vite import vite
 from huepy import *
 
@@ -8,23 +8,27 @@ from huepy import *
 def main():
     desc = green('A simple and minimal static site generator.')
     usage = lightblue('vite') + ' [new | build | serve]'
-    parser = argparse.ArgumentParser(description=desc, usage=usage)
-    help_text = 'Commands to create, build and serve your project.' 
-    parser.add_argument('action', choices=['new', 'build', 'serve'], help=help_text)
-    parser.add_argument('path', nargs='*')
+    # parser = argparse.ArgumentParser(description=desc, usage=usage)
+    parser = argparse.ArgumentParser()
+    # help_text = 'Commands to create, build and serve your project.' 
+    sp = parser.add_subparsers(dest='cmd')
+    spp = sp.add_parser('new')
+    for cmd in ['build', 'serve']:
+        sp.add_parser(cmd)
+    spp.add_argument('path')
+    args = parser.parse_args()
 
-    project_path = args.path[0]
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
-    elif args.new:
-        vite.create_project(project_path)
-    elif args.build:
+    elif args.cmd == 'new':
+        if args.path:
+            vite.create_project(args.path)
+        else:
+            parser.print_help()
+    elif args.cmd == 'build':
         vite.builder()
-    elif args.serve:
+    elif args.cmd == 'serve':
         vite.server()
     else:
         parser.print_help()
-
-if args.new:
-    vite.create_project(project_path)

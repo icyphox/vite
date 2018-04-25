@@ -2,7 +2,6 @@
 	<img width="400" src="https://xix.ph0x.me/vitelogo.png" alt="Vite">
 </h1>
 
-## PROJECT UNDERGOING MAJOR REWORK, DON'T BOTHER USING IT UNTIL THIS MESSAGE IS GONE
 > A simple and mnml static site generator; pronounced as /vit/
 
 [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
@@ -78,8 +77,8 @@ Directory tree
     example
     ├── build
     ├── config.py
-    ├── make.py -> /home/icyphox/code/vite/make.py
     ├── pages
+    │   └── test.md
     ├── static
     └── templates
         └── index.html

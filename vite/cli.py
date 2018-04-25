@@ -27,8 +27,10 @@ def main():
         else:
             parser.print_help()
     elif args.cmd == 'build':
+        vite.import_config()
         vite.builder()
     elif args.cmd == 'serve':
+        vite.import_config()
         vite.server()
     else:
         parser.print_help()

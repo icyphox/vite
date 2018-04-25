@@ -17,18 +17,25 @@ from huepy import *
 from distutils.dir_util import copy_tree
 from vite import vite
 
-try:
-    sys.path.append(os.getcwd())
-    import config
-except FileNotFoundError:
-    print(bad('Error: config.py not found'))
 
 # constants
 PAGES_PATH = 'pages/'
 BUILD_PATH = 'build/'
 TEMPL_PATH = 'templates/'
-TEMPL_FILE = TEMPL_PATH + config.template
+TEMPL_FILE = ''
 PORT = 1911
+
+
+def import_config():
+    try:
+        sys.path.append(os.getcwd())
+        globals()['config'] = __import__('config') 
+        global TEMPL_FILE
+        TEMPL_FILE = os.path.join(TEMPL_PATH, config.template)
+    except ImportError:
+        print(bad('Error: config.py not found.'))
+        print(que('Are you sure you\'re in a project directory?'))
+        sys.exit(1)
 
 
 def create_project(path):
@@ -40,8 +47,6 @@ def create_project(path):
         os.mkdir(os.path.join(path, 'templates'))
         os.mkdir(os.path.join(path, 'static'))
         create_config(path)
-        os.symlink(os.path.join(cur_path, 'make.py'),
-                   os.path.join(abs_path, 'make.py'))
         create_template(path)
         print(good('Created project directory at %s.' % (abs_path)))
     except FileExistsError:
@@ -142,24 +147,3 @@ def builder():
         except jinja2.exceptions.TemplateNotFound:
             print(bad('Error: specified template not found: %s' % TEMPL_FILE))
  
-
-#if __name__ == "__main__":
-#    usage = lightblue('vite.py') + ' new [PATH]' 
-#    desc = green('A simple and minimal static site generator.')
-#    parser = argparse.ArgumentParser(description=desc, usage=usage)
-#    parser.add_argument('new', nargs='*', help='Create new Vite project.')
-#    
-#    if len(sys.argv) == 1:
-#        parser.print_help()
-#        sys.exit(1)
-#    
-#    try:
-#        args = parser.parse_args()
-#        project_path = args.new[1]
-#    except IndexError:
-#        parser.print_help()
-#        sys.exit(1)
-#
-#    if args.new:
-#        create_project(project_path)
-

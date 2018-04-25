@@ -15,25 +15,23 @@ Installation
 
 Clone this repo and:
 ```console
-$ pip3 install -r requirements.txt
+$ pip install .  # in the cloned directory
 ```
-**NOTE**: Don't delete the cloned repo, since `make.py` is symlinked upon project creation.
-
 Usage
 -----
 
 ```console
-$ ./vite.py new <project-path>
+$ vite new <project-path>
 ```
 Write your Markdown files in the `pages` directory and execute:
 ```console
-$ ./make.py   # in project directory
+$ vite build   # in project directory
 ```
 Rendered HTML will be in the `build` directory.
 
 Finally, run:
 ```console
-$ ./make.py serve
+$ vite serve  # also in the project directory
 ```
 to serve the contents of the `build` directory.
 

@@ -9,7 +9,7 @@ setup(
         long_description=long_description,
         long_description_content_type='text/markdown',
         name='vite',
-        version='1.2',
+        version='1.2.1',
         description='A simple and minimal static site generator.',
         url='https://github.com/icyphox/vite',
         packages=['vite'],

@@ -3,15 +3,15 @@ import os
 import sys
 from vite import vite
 from huepy import *
+from vite import __version__
 
 
 def main():
     desc = green('A simple and minimal static site generator.')
-    usage = lightblue('vite') + ' [new | build | serve]'
-    # parser = argparse.ArgumentParser(description=desc, usage=usage)
-    parser = argparse.ArgumentParser()
-    # help_text = 'Commands to create, build and serve your project.' 
-    sp = parser.add_subparsers(dest='cmd')
+    usage = lightblue('vite') + ' [options]'
+    parser = argparse.ArgumentParser(description=desc, usage=usage)
+    parser.add_argument('-v', '--version', action='version', version='{version}'.format(version=__version__))
+    sp = parser.add_subparsers(dest='cmd', help='Options to help create, build and serve your project.')
     spp = sp.add_parser('new')
     for cmd in ['build', 'serve']:
         sp.add_parser(cmd)

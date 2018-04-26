@@ -2,7 +2,7 @@
 	<img width="400" src="https://xix.ph0x.me/vitelogo.png" alt="Vite">
 </h1>
 
-> A simple and mnml static site generator; pronounced as /vit/
+> A simple and mnml static site generator that Just Works™
 
 [![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)

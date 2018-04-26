@@ -7,7 +7,7 @@ setup(
         long_description=long_description,
         long_description_content_type='text/markdown',
         name='vite',
-        version='1.1',
+        version='1.2',
         description='A simple and minimal static site generator.',
         packages=['vite'],
         install_requires=[

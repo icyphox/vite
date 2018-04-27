@@ -1,4 +1,5 @@
 from setuptools import setup
+from vite import __version__
 
 with open('README.md') as f:
     long_description = f.read()
@@ -9,7 +10,7 @@ setup(
         long_description=long_description,
         long_description_content_type='text/markdown',
         name='vite',
-        version='1.2.1',
+        version=__version__,
         description='A simple and minimal static site generator.',
         url='https://github.com/icyphox/vite',
         license='MIT',

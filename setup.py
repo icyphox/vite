@@ -12,6 +12,7 @@ setup(
         version='1.2.1',
         description='A simple and minimal static site generator.',
         url='https://github.com/icyphox/vite',
+        license='MIT',
         packages=['vite'],
         install_requires=[
             'markdown2', 'Jinja2', 'huepy',

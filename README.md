@@ -12,9 +12,8 @@
 Installation
 ------------
 
-Clone this repo and:
 ```console
-$ pip install .  # in the cloned directory
+$ pip install vite
 ```
 Usage
 -----

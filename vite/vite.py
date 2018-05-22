@@ -25,7 +25,7 @@ TEMPL_PATH = 'templates/'
 TEMPL_FILE = ''
 PORT = 1911
 
-
+# function to import config file from project dir
 def import_config():
     try:
         sys.path.append(os.getcwd())
@@ -88,7 +88,7 @@ def create_template(path):
 
                 """)
 
-# jinja2
+# renders text fetched from markdown_render() into the template
 def jinja_render(html_text, TEMPL_FILE):
     template_loader = jinja2.FileSystemLoader('./')
     env = jinja2.Environment(loader=template_loader)
@@ -100,16 +100,16 @@ def jinja_render(html_text, TEMPL_FILE):
                              body=html_text)
     return output
 
-
+# markdown to html
 def markdown_render(filename):
     html_text = markdown_path(PAGES_PATH + filename)
     return html_text
 
-
+# generates the actual html files (markdown_render + jinja_render)
 def html_gen():
     for page in os.listdir(PAGES_PATH):
         html_text = markdown_render(page)
-        html_file= os.path.splitext(os.path.join(BUILD_PATH, page))[0]
+        html_file = os.path.splitext(os.path.join(BUILD_PATH, page))[0]
         if not os.path.exists(html_file):
             os.mkdir(html_file)
         output = jinja_render(html_text, TEMPL_FILE)
@@ -117,7 +117,9 @@ def html_gen():
             f.write(output)
             print(run('Rendered %s.' % (page)))
 
+def index_gen():
 
+# a basic server to view the site
 def server():
     handler = http.server.SimpleHTTPRequestHandler
     os.chdir(os.path.join(os.getcwd(), BUILD_PATH))
@@ -131,6 +133,7 @@ def server():
         httpd.socket.close()
         sys.exit(1)
 
+# runs timer, calls html_gen(), makes output dirs, i.e. `static`
 def builder():
     path = os.getcwd()
     start = time.process_time()

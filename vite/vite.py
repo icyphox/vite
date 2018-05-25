@@ -118,6 +118,11 @@ def html_gen():
             print(run('Rendered %s.' % (page)))
 
 def index_gen():
+    html_text = markdown_render('_index.md')
+    output = jinja_render(html_text, TEMPL_FILE)
+    with open('index.html', 'w') as f:
+        f.write(output)
+        print(run('Rendered _index.md'))
 
 # a basic server to view the site
 def server():

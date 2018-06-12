@@ -12,6 +12,7 @@
 <h1 align="center">
     <img width="750" src="https://xix.ph0x.me/vite_epi.png" alt="Vite demo">
 </h1>
+
 Installation
 ------------
 

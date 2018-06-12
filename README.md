@@ -1,5 +1,5 @@
 <h1 align="center">
-	<img width="400" src="https://xix.ph0x.me/vitelogo.png" alt="Vite">
+	<img width="200" src="https://xix.ph0x.me/vitelogo.png" alt="Vite">
 </h1>
 
 > A simple and mnml static site generator that Just Works™
@@ -9,6 +9,9 @@
 [![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
 [![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
 
+<h1 align="center">
+    <img width="350" src="https://xix.ph0x.me/vite_epi.png" alt="Vite demo">
+</h1>
 Installation
 ------------
 

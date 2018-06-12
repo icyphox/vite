@@ -46,14 +46,15 @@ title = ''
 author = ''
 header = ''
 footer = '' 
-template = 'index.html'  # default is index.html
+template = 'index.html'  # default is templates/index.html
 ```
 
 Templating
 ----------
 
-Vite uses Jinja2 templating.  
-**NOTE**: Stylesheets, images and JS can be accessed from the `static` folder.
+Vite uses Jinja2 templating, so template files must be placed in a separate `templates/` directory.  
+**NOTE**: Stylesheets, images and JS can be accessed from the `static` folder.  
+**ANOTHER NOTE**: `index.html`, i.e. your website's homepage, should be `_index.md` in the `pages/` directory.
 
 A basic example would be:
 ```html
@@ -91,7 +92,7 @@ TODO
 - [x] Add example site
 - [x] Basic config (`config.py`)
 - [ ] Parsing frontmatter (JSON, YAML, TOML)
-- [ ] Better support for home page (main `index.html` page)
+- [x] Better support for home page (main `index.html` page)
 
 
 ## Credits

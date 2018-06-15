@@ -67,8 +67,7 @@ template = 'index.html'  # default is index.html
 
 def create_template(path):
     with open(os.path.join(path, 'templates', 'index.html'), 'w') as f:
-        f.write("""
-<!DOCTYPE html>
+        f.write("""<!DOCTYPE html>
 <html>
 <header>
 	{{ header }}
@@ -108,13 +107,12 @@ def markdown_render(filename):
 
 def html_gen():
     for page in os.listdir(PAGES_PATH):
-        print(page)
         if page == '_index.md':
             index_html = markdown_render(page)
             output = jinja_render(index_html, TEMPL_FILE)
             with open(os.path.join(BUILD_PATH, 'index.html'), 'w') as f:
                 f.write(output)
-                print(run('Rendered index.html'))
+                print(run('Rendered _index.md'))
         else:
             html_text = markdown_render(page)
             html_file = os.path.splitext(os.path.join(BUILD_PATH, page))[0]

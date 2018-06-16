@@ -11,6 +11,7 @@ import jinja2
 import time
 import http.server
 import socketserver
+import shutil
 
 from markdown2 import markdown_path
 from huepy import *
@@ -107,7 +108,9 @@ def markdown_render(filename):
 
 def html_gen():
     for page in os.listdir(PAGES_PATH):
-        if page == '_index.md':
+        if os.path.splitext(page)[1] != '.md':
+            shutil.copyfile(os.path.join(PAGES_PATH, page), os.path.join(BUILD_PATH, page))
+        elif page == '_index.md':
             index_html = markdown_render(page)
             output = jinja_render(index_html, TEMPL_FILE)
             with open(os.path.join(BUILD_PATH, 'index.html'), 'w') as f:

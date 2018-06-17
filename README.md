@@ -57,9 +57,6 @@ Templating
 ----------
 
 Vite uses Jinja2 templating, so template files must be placed in a separate `templates/` directory.  
-**NOTE**: Stylesheets, images and JS can be accessed from the `static` folder.  
-**ANOTHER NOTE**: `index.html`, i.e. your website's homepage, should be `_index.md` in the `pages/` directory.
-
 A basic example would be:
 ```html
 <link rel="stylesheet" href="../static/sakura-earthy.css">
@@ -74,6 +71,12 @@ A basic example would be:
 {{ footer }}
 </footer>
 ```
+### Notes on templating
+
+- Stylesheets, images and JS can be accessed from the `static` folder.
+- `index.html`, i.e. your website's homepage, should be `_index.md` in the `pages/` directory.
+
+
 
 Directory tree
 --------------

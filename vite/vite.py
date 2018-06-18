@@ -14,7 +14,6 @@ import socketserver
 import shutil
 
 from markdown2 import markdown_path
-from distutils.dir_util import copy_tree
 from huepy import *
 from vite import vite
 
@@ -181,9 +180,8 @@ def builder():
         try:
             clean()
             html_gen()
-            if not os.path.exists(os.path.join(path, BUILD_PATH, 'static')):
-                os.mkdir(os.path.join(path, BUILD_PATH, 'static'))
-            copy_tree('static', os.path.join(path, BUILD_PATH, 'static'))
+            if os.path.exists(os.path.join(PAGES_PATH, 'static')):
+                shutil.copytree(os.path.join(PAGES_PATH, 'static'), os.path.join(BUILD_PATH))
             print(good('Done in %0.5fs.' % (time.process_time() - start)))
         except jinja2.exceptions.TemplateNotFound:
             print(bad('Error: specified template not found: %s' % TEMPL_FILE))

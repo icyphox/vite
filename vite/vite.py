@@ -14,8 +14,8 @@ import socketserver
 import shutil
 
 from markdown2 import markdown_path
-from huepy import *
 from distutils.dir_util import copy_tree
+from huepy import *
 from vite import vite
 
 
@@ -140,6 +140,12 @@ def server():
         httpd.socket.close()
         sys.exit(1)
 
+
+def clean():
+    shutil.rmtree(BUILD_PATH)
+    os.makedirs(BUILD_PATH)
+
+
 def builder():
     path = os.getcwd()
     start = time.process_time()
@@ -148,6 +154,7 @@ def builder():
         sys.exit(1)
     else:
         try:
+            clean()
             html_gen()
             if not os.path.exists(os.path.join(path, BUILD_PATH, 'static')):
                 os.mkdir(os.path.join(path, BUILD_PATH, 'static'))

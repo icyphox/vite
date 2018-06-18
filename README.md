@@ -98,7 +98,7 @@ TODO
 - [x] Implement a simple HTTP server (*later*)
 - [x] Add example site
 - [x] Basic config (`config.py`)
-- [ ] ~~Parsing frontmatter (JSON, YAML, TOML)~~ (not doing this)
+- [ ] Parsing frontmatter (JSON, YAML, TOML) for per-page options
 - [x] Better support for home page (main `index.html` page)
 
 

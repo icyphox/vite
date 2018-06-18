@@ -102,29 +102,54 @@ def jinja_render(html_text, TEMPL_FILE):
 
 
 def markdown_render(filename):
-    html_text = markdown_path(PAGES_PATH + filename)
+    html_text = markdown_path(os.path.join(PAGES_PATH, filename))
     return html_text
 
 
 def html_gen():
-    for page in os.listdir(PAGES_PATH):
-        if os.path.splitext(page)[1] != '.md':
-            shutil.copyfile(os.path.join(PAGES_PATH, page), os.path.join(BUILD_PATH, page))
-        elif page == '_index.md':
-            index_html = markdown_render(page)
-            output = jinja_render(index_html, TEMPL_FILE)
-            with open(os.path.join(BUILD_PATH, 'index.html'), 'w') as f:
-                f.write(output)
-                print(run('Rendered _index.md'))
-        else:
-            html_text = markdown_render(page)
-            html_file = os.path.splitext(os.path.join(BUILD_PATH, page))[0]
-            if not os.path.exists(html_file):
+    #TODO: refactor all of this!
+    for root, dirs, files in os.walk(PAGES_PATH):
+        for d in dirs:
+            os.mkdir(os.path.join(BUILD_PATH, d))
+            for f in os.listdir(os.path.join(PAGES_PATH, d)):
+                if os.path.splitext(f)[1] != '.md':
+                    shutil.copyfile(os.path.join(PAGES_PATH, d, f),
+                                    os.path.join(BUILD_PATH, d, f))
+                    print(run('Copied %s/%s' % (d, f)))
+                elif f == '_index.md':
+                    index_html = markdown_render(os.path.join(d, f))
+                    output = jinja_render(index_html, TEMPL_FILE)
+                    with open(os.path.join(BUILD_PATH, d, 'index.html'), 'w') as f:
+                        f.write(output)
+                        print(run('Rendered %s/_index.md' % (d)))
+                else:
+                    html_text = markdown_render(os.path.join(d, f))
+                    html_file = os.path.splitext(os.path.join(BUILD_PATH, d, f))[0]
+                    os.mkdir(html_file)
+                    output = jinja_render(html_text, TEMPL_FILE)
+                    with open(os.path.join(html_file, 'index.html'), 'w') as ff:
+                        ff.write(output)
+                        print(run('Rendered %s/%s' % (d, f)))
+
+    for f in os.listdir(PAGES_PATH):
+        if os.path.isfile(os.path.join(PAGES_PATH, f)):
+            if os.path.splitext(f)[1] != '.md':
+                shutil.copyfile(os.path.join(PAGES_PATH, f), os.path.join(BUILD_PATH, f))
+                print(run('Copied %s' % (f)))
+            elif f == '_index.md':
+                index_html = markdown_render(f)
+                output = jinja_render(index_html, TEMPL_FILE)
+                with open(os.path.join(BUILD_PATH, 'index.html'), 'w') as ff:
+                        ff.write(output)
+                        print(run('Rendered _index.md'))
+            else:
+                html_text = markdown_render(f)
+                html_file = os.path.splitext(os.path.join(BUILD_PATH, f))[0]
                 os.mkdir(html_file)
-            output = jinja_render(html_text, TEMPL_FILE)
-            with open(os.path.join(html_file, 'index.html'), 'w') as f:
-                f.write(output)
-                print(run('Rendered %s.' % (page)))
+                output = jinja_render(html_text, TEMPL_FILE)
+                with open(os.path.join(html_file, 'index.html'), 'w') as ff:
+                    ff.write(output)
+                    print(run('Rendered %s' % f))
 
 
 def server():

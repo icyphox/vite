@@ -182,9 +182,8 @@ def builder():
         try:
             clean()
             html_gen()
-            if os.path.exists(os.path.join(PAGES_PATH, 'static')):
-                shutil.copytree(os.path.join(PAGES_PATH, 'static'), os.path.join(BUILD_PATH))
+            if os.path.exists(os.path.join(os.getcwd(), 'static')):
+                shutil.copytree(os.path.join(os.getcwd(), 'static'), os.path.join(BUILD_PATH, 'static'))
             print(good('Done in %0.5fs.' % (time.process_time() - start)))
         except jinja2.exceptions.TemplateNotFound:
             print(bad('Error: specified template not found: %s' % TEMPL_FILE))
-

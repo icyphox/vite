@@ -14,6 +14,7 @@ import time
 import http.server
 import socketserver
 import shutil
+import frontmatter
 
 from markdown2 import markdown_path
 from huepy import *
@@ -90,16 +91,31 @@ def create_template(path):
                 """)
 
 # jinja2
-def jinja_render(html_text, TEMPL_FILE):
+def jinja_render(html_text, tmpl):
     template_loader = jinja2.FileSystemLoader('./')
     env = jinja2.Environment(loader=template_loader)
-    template = env.get_template(TEMPL_FILE)
-    output = template.render(title=config.title,
+    try:
+        template = env.get_template(tmpl)    
+        output = template.render(title=config.title,
                              author=config.author,
                              header=config.header,
                              footer=config.footer,
                              body=html_text)
-    return output
+        return output
+    except jinja2.exceptions.TemplateNotFound:
+        print(bad('Error: specified template not found: %s' % (tmpl)))
+        sys.exit(1)
+
+
+def fm_template(f, d):
+    with open(os.path.join(PAGES_PATH, d, f), 'r') as ff:
+        metadata, _ = frontmatter.parse(ff.read())
+    try:
+        page_template = os.path.join(os.path.join(TEMPL_PATH, metadata['template']))
+    except KeyError:
+        page_template = TEMPL_FILE
+
+    return page_template
 
 
 def markdown_render(filename):
@@ -108,28 +124,28 @@ def markdown_render(filename):
 
 
 def html_gen():
-    #TODO: refactor all of this!
     def index_render(f, d=''):
         index_html = markdown_render(os.path.join(d, f))
-        output = jinja_render(index_html, TEMPL_FILE)
+        output = jinja_render(index_html, fm_template(f, d))
         with open(os.path.join(BUILD_PATH, d, 'index.html'), 'w') as ff:
             ff.write(output)
             if d:
                 print(run('Rendered %s/%s' % (d, f)))
             else:
-                print(run('Rendered %s' % (f, d)))
+                print(run('Rendered %s' % (f)))
 
     def normal_render(f, d=''):
         html_text = markdown_render(os.path.join(d, f))
         html_file = os.path.splitext(os.path.join(BUILD_PATH, d, f))[0]
         os.mkdir(html_file)
-        output = jinja_render(html_text, TEMPL_FILE)
+        output = jinja_render(html_text, fm_template(f, d))
         with open(os.path.join(html_file, 'index.html'), 'w') as ff:
             ff.write(output)
             if d:
                 print(run('Rendered %s/%s' % (d, f)))
             else:
                 print(run('Rendered %s' % (f)))
+
 
     for root, dirs, files in os.walk(PAGES_PATH):
         for d in dirs:
@@ -181,11 +197,8 @@ def builder():
         print(info(italic('pages') + ' directory is empty. Nothing to build.'))
         sys.exit(1)
     else:
-        try:
-            clean()
-            html_gen()
-            if os.path.exists(os.path.join(os.getcwd(), 'static')):
-                shutil.copytree(os.path.join(os.getcwd(), 'static'), os.path.join(BUILD_PATH, 'static'))
-            print(good('Done in %0.5fs.' % (time.process_time() - start)))
-        except jinja2.exceptions.TemplateNotFound:
-            print(bad('Error: specified template not found: %s' % TEMPL_FILE))
+        clean()
+        html_gen()
+        if os.path.exists(os.path.join(os.getcwd(), 'static')):
+            shutil.copytree(os.path.join(os.getcwd(), 'static'), os.path.join(BUILD_PATH, 'static'))
+        print(good('Done in %0.5fs.' % (time.process_time() - start)))

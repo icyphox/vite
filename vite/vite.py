@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 """
-Vite - A simple and minimal static site generator.
+Vite - A simple and minimal static site generator that JustWorks™
+Author: Anirudh <icyph0x@pm.me>
+License: MIT
 """
 
 import sys

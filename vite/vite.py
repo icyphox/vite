@@ -14,11 +14,9 @@ import time
 import http.server
 import socketserver
 import shutil
-import frontmatter
 
 from markdown2 import markdown_path
 from huepy import *
-from vite import vite
 
 
 # constants

@@ -1,5 +1,4 @@
 import argparse
-import os
 import sys
 from vite import vite
 from huepy import *

@@ -59,7 +59,7 @@ Templating
 Vite uses Jinja2 templating, so template files must be placed in a separate `templates/` directory.  
 A basic example would be:
 ```html
-<link rel="stylesheet" href="../static/sakura-earthy.css">
+<link rel="stylesheet" href="/static/sakura-earthy.css">
 
 <title> {{ title }} </title>
 
@@ -71,11 +71,22 @@ A basic example would be:
 {{ footer }}
 </footer>
 ```
+### Specifying per-page templates
+Vite allows for specifying a unique template, per page. This is acheived by including YAML frontmatter at the top of the Markdown file, like so:
+
+```markdown
+---
+template: foo.html
+---
+
+## markdown here
+...
+```
+
 ### Notes on templating
 
 - Stylesheets, images and JS can be accessed from the `static` folder.
 - `index.html`, i.e. your website's homepage, should be `_index.md` in the `pages/` directory.
-
 
 
 Directory tree

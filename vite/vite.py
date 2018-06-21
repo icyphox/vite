@@ -107,44 +107,41 @@ def jinja_render(html_text, tmpl):
         sys.exit(1)
 
 
-def fm_template(f, d):
-    with open(os.path.join(PAGES_PATH, d, f), 'r') as ff:
-        metadata, _ = frontmatter.parse(ff.read())
+def fm_template(metadata):
     try:
         page_template = os.path.join(os.path.join(TEMPL_PATH, metadata['template']))
     except KeyError:
         page_template = TEMPL_FILE
-
     return page_template
 
 
 def markdown_render(filename):
-    html_text = markdown_path(os.path.join(PAGES_PATH, filename))
+    html_text = markdown_path(os.path.join(PAGES_PATH, filename), extras=['metadata'])
     return html_text
 
 
 def html_gen():
     def index_render(f, d=''):
         index_html = markdown_render(os.path.join(d, f))
-        output = jinja_render(index_html, fm_template(f, d))
+        output = jinja_render(index_html, fm_template(index_html.metadata))
         with open(os.path.join(BUILD_PATH, d, 'index.html'), 'w') as ff:
             ff.write(output)
             if d:
-                print(run('Rendered %s/%s' % (d, f)))
+                print(run('Rendered ' + white('%s/%s') % (d, f)))
             else:
-                print(run('Rendered %s' % (f)))
+                print(run('Rendered ' + white('%s') % (f)))
 
     def normal_render(f, d=''):
         html_text = markdown_render(os.path.join(d, f))
         html_file = os.path.splitext(os.path.join(BUILD_PATH, d, f))[0]
         os.mkdir(html_file)
-        output = jinja_render(html_text, fm_template(f, d))
+        output = jinja_render(html_text, fm_template(html_text.metadata))
         with open(os.path.join(html_file, 'index.html'), 'w') as ff:
             ff.write(output)
             if d:
-                print(run('Rendered %s/%s' % (d, f)))
+                print(run('Rendered ' + white('%s/%s') % (d, f)))
             else:
-                print(run('Rendered %s' % (f)))
+                print(run('Rendered ' +  white('%s') % (f)))
 
 
     for root, dirs, files in os.walk(PAGES_PATH):
@@ -154,7 +151,7 @@ def html_gen():
                 if os.path.splitext(f)[1] != '.md':
                     shutil.copyfile(os.path.join(PAGES_PATH, d, f),
                                     os.path.join(BUILD_PATH, d, f))
-                    print(run('Copied %s/%s' % (d, f)))
+                    print(run('Copied ' + white('%s/%s') % (d, f)))
                 elif f == '_index.md':
                     index_render(f, d)
                 else:
@@ -164,7 +161,7 @@ def html_gen():
         if os.path.isfile(os.path.join(PAGES_PATH, f)):
             if os.path.splitext(f)[1] != '.md':
                 shutil.copyfile(os.path.join(PAGES_PATH, f), os.path.join(BUILD_PATH, f))
-                print(run('Copied %s' % (f)))
+                print(run('Copied ' + white('%s') % (f)))
             elif f == '_index.md':
                 index_render(f)
             else:
@@ -176,7 +173,7 @@ def server():
     os.chdir(os.path.join(os.getcwd(), BUILD_PATH))
     try:
         with socketserver.TCPServer(('', PORT), handler) as httpd:
-            print(run(f'Serving the {italic("build")} directory at http://localhost:{PORT}'))
+            print(run(f'Serving the {italic(cyan("build"))} directory at {yellow(f"http://localhost:{PORT}")}'))
             print(white('Ctrl+C') + ' to stop.')
             httpd.serve_forever()
     except KeyboardInterrupt:

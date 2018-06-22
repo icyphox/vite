@@ -109,11 +109,11 @@ TODO
 - [x] Implement a simple HTTP server (*later*)
 - [x] Add example site
 - [x] Basic config (`config.py`)
-- [ ] Parsing frontmatter (JSON, YAML, TOML) for per-page options
+- [x] Parsing frontmatter (JSON, YAML, TOML) for per-page options
 - [x] Better support for home page (main `index.html` page)
 
 
 ## Credits
 Logo credits: <a href="http://www.freepik.com" title="Freepik">Freepik</a> from <a href="https://www.flaticon.com/" title="Flaticon">www.flaticon.com</a> is licensed by <a href="http://creativecommons.org/licenses/by/3.0/" title="Creative Commons BY 3.0" target="_blank">CC 3.0 BY</a>  
-Hue: [UltimateHackers/hue](https://github.com/UltimateHackers/hue)
+Hue: [s0md3v/hue](https://github.com/UltimateHackers/hue)
 

@@ -181,8 +181,17 @@ def server():
 
 
 def clean():
-    shutil.rmtree(BUILD_PATH)
-    os.makedirs(BUILD_PATH)
+    #shutil.rmtree(BUILD_PATH)
+    #os.makedirs(BUILD_PATH)
+    for f in os.listdir(BUILD_PATH):
+        fpath = os.path.join(BUILD_PATH, f)
+        try:
+            if os.path.isfile(fpath):
+                os.unlink(fpath)
+            elif os.path.isdir(fpath):
+                shutil.rmtree(fpath)
+        except Exception as e:
+            print(e)
 
 
 def builder():

@@ -16,7 +16,7 @@ setup(
         license='MIT',
         packages=['vite'],
         install_requires=[
-            'markdown2', 'Jinja2', 'huepy',
+            'markdown2', 'Jinja2', 'huepy', 'pygments',
             ],
         entry_points={
             'console_scripts': [

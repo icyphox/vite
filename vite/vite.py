@@ -112,7 +112,7 @@ def fm_template(metadata):
 
 
 def markdown_render(filename):
-    html_text = markdown_path(os.path.join(PAGES_PATH, filename), extras=['metadata'])
+    html_text = markdown_path(os.path.join(PAGES_PATH, filename), extras=['metadata', 'fenced-code-blocks'])
     return html_text
 
 

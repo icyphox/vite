@@ -87,16 +87,18 @@ def create_template(path):
                 """)
 
 # jinja2
-def jinja_render(html_text, tmpl):
+def jinja_render(html, tmpl):
     template_loader = jinja2.FileSystemLoader('./')
     env = jinja2.Environment(loader=template_loader)
     try:
-        template = env.get_template(tmpl)    
-        output = template.render(title=config.title,
-                             author=config.author,
-                             header=config.header,
-                             footer=config.footer,
-                             body=html_text)
+        template = env.get_template(tmpl)
+        meta = html.metadata
+        print(meta)
+        output = template.render(title=meta['title'] if 'title' in meta else config.title,
+                             author=meta['author'] if 'author' in meta else config.author,
+                             header=meta['header'] if 'header' in meta else config.header,
+                             footer=meta['footer'] if 'footer' in meta else config.footer,
+                             body=html)
         return output
     except jinja2.exceptions.TemplateNotFound:
         print(bad('Error: specified template not found: %s' % (tmpl)))
@@ -112,8 +114,8 @@ def fm_template(metadata):
 
 
 def markdown_render(filename):
-    html_text = markdown_path(os.path.join(PAGES_PATH, filename), extras=['metadata', 'fenced-code-blocks'])
-    return html_text
+    html = markdown_path(os.path.join(PAGES_PATH, filename), extras=['metadata', 'fenced-code-blocks'])
+    return html
 
 
 def html_gen():

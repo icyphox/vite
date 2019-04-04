@@ -12,6 +12,7 @@ import time
 import http.server
 import socketserver
 import shutil
+import datetime
 
 from markdown2 import markdown_path
 from huepy import *
@@ -52,6 +53,27 @@ def create_project(path):
         print(bad('Error: specified path exists.'))
 
 
+def create_path(path):
+    head, tail = os.path.split(path)
+    now = datetime.datetime.now()
+    today = now.strftime('%Y-%m-%d')
+
+    try:
+        os.makedirs(os.path.join(PAGES_PATH, head))
+    except FileExistsError:
+        pass
+    if os.path.exists(os.path.join(PAGES_PATH, head, tail)):
+        print(bad('Error: specified path exists.'))
+    else:
+        with open(os.path.join(PAGES_PATH, head, tail), 'w') as f:
+            f.write(f"""---
+    template:
+    title:
+    date: {today}
+    ---\n""")
+        print(good('Created %s.') % (os.path.join(PAGES_PATH, head, tail)))
+
+
 def create_config(path):
     with open(os.path.join(path, 'config.py'), 'w') as f:
         f.write("""# config.py - Vite's configuration script
@@ -60,8 +82,7 @@ title = ''
 author = ''
 header = ''
 footer = '' 
-template = 'index.html'  # default is index.html
-               """)
+template = 'index.html'  # default is index.html\n""")
 
 
 def create_template(path):
@@ -181,8 +202,6 @@ def server():
 
 
 def clean():
-    #shutil.rmtree(BUILD_PATH)
-    #os.makedirs(BUILD_PATH)
     for f in os.listdir(BUILD_PATH):
         fpath = os.path.join(BUILD_PATH, f)
         try:

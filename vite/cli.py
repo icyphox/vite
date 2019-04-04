@@ -11,18 +11,27 @@ def main():
     parser = argparse.ArgumentParser(description=desc, usage=usage)
     parser.add_argument('-v', '--version', action='version', version='{version}'.format(version=__version__))
     sp = parser.add_subparsers(dest='cmd', help='Options to help create, build and serve your project.')
-    spp = sp.add_parser('new')
+    #for cmd in ['init', 'new']:
+    sp_init = sp.add_parser('init')
+    sp_new = sp.add_parser('new')
     for cmd in ['build', 'serve']:
         sp.add_parser(cmd)
-    spp.add_argument('path')
+    sp_init.add_argument('path')
+    sp_new.add_argument('path')
     args = parser.parse_args()
 
     if len(sys.argv) == 1:
         parser.print_help()
         sys.exit(1)
-    elif args.cmd == 'new':
+    elif args.cmd == 'init':
         if args.path:
             vite.create_project(args.path)
+        else:
+            parser.print_help()
+    elif args.cmd == 'new':
+        if args.path:
+            vite.import_config()
+            vite.create_path(args.path)
         else:
             parser.print_help()
     elif args.cmd == 'build':

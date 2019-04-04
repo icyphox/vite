@@ -20,9 +20,12 @@ Usage
 -----
 
 ```console
-$ vite new <project-path>
+$ vite init path/to/project
+$ vite new blog/some-post.md   # `pages/` is implied
 ```
-Write your Markdown files in the `pages` directory and execute:
+This creates `pages/blog/some-post.md`.
+
+And then:
 ```console
 $ vite build   # in project directory
 ```
@@ -32,7 +35,6 @@ Finally, run:
 ```console
 $ vite serve  # also in the project directory
 ```
-to serve the contents of the `build` directory.
 
 Configuration
 -------------

@@ -56,7 +56,7 @@ def create_project(path):
 def create_path(path):
     head, tail = os.path.split(path)
     now = datetime.datetime.now()
-    today = now.strftime('%Y-%m-%d')
+    today = now.strftime('%d %B, %Y')
 
     try:
         os.makedirs(os.path.join(PAGES_PATH, head))
@@ -67,10 +67,10 @@ def create_path(path):
     else:
         with open(os.path.join(PAGES_PATH, head, tail), 'w') as f:
             f.write(f"""---
-    template:
-    title:
-    date: {today}
-    ---\n""")
+template:
+title:
+date: {today}
+---\n""")
         print(good('Created %s.') % (os.path.join(PAGES_PATH, head, tail)))
 
 
@@ -114,11 +114,11 @@ def jinja_render(html, tmpl):
     try:
         template = env.get_template(tmpl)
         meta = html.metadata
-        print(meta)
         output = template.render(title=meta['title'] if 'title' in meta else config.title,
                              author=meta['author'] if 'author' in meta else config.author,
                              header=meta['header'] if 'header' in meta else config.header,
                              footer=meta['footer'] if 'footer' in meta else config.footer,
+                             date=meta['date'] if 'date' in meta else '',
                              body=html)
         return output
     except jinja2.exceptions.TemplateNotFound:

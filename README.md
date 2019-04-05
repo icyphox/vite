@@ -76,6 +76,8 @@ Vite allows for specifying a unique template, per page. This is acheived by incl
 ```markdown
 ---
 template: foo.html
+title: Some fancy buzzwords here
+date: 1 April, 2019
 ---
 
 ## markdown here

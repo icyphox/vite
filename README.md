@@ -77,6 +77,7 @@ Vite allows for specifying a unique template, per page. This is acheived by incl
 ---
 template: foo.html
 title: Some fancy buzzwords here
+subtitle: Cool catch phrase here
 date: 1 April, 2019
 ---
 
@@ -112,7 +113,7 @@ TODO
 - [x] Basic config (`config.py`)
 - [x] Parsing frontmatter (JSON, YAML, TOML) for per-page options
 - [x] Better support for home page (main `index.html` page)
-- [ ] More powerful frontmatter (title, date, draft status, etc.)
-- [ ] Deeper directories under `pages/` (supports only one level now, breaks otherwise)
-- [ ] Tagging system
+- [x] More powerful frontmatter (title, date, draft status, etc.) (draft status is incomplete)
+- [ ] ~Deeper directories under `pages/` (supports only one level now, breaks otherwise)~ (not happening)
+- [ ] ~Tagging system~ (not happening)
 

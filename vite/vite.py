@@ -119,6 +119,7 @@ def jinja_render(html, tmpl):
                              header=meta['header'] if 'header' in meta else config.header,
                              footer=meta['footer'] if 'footer' in meta else config.footer,
                              date=meta['date'] if 'date' in meta else '',
+                             subtitle=meta['subtitle'] if 'subtitle' in meta else '',
                              body=html)
         return output
     except jinja2.exceptions.TemplateNotFound:

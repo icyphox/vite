@@ -1,4 +1,4 @@
-Jinja2==2.10
+Jinja2==2.10.1
 markdown2==2.3.6
 MarkupSafe==1.0
 huepy

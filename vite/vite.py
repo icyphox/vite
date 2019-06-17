@@ -66,11 +66,14 @@ def create_path(path):
         print(bad('Error: specified path exists.'))
     else:
         with open(os.path.join(PAGES_PATH, head, tail), 'w') as f:
-            f.write(f"""---
-template:
-title:
-date: {today}
----\n""")
+            to_write = (
+                 """---
+                 template
+                 title:"
+                 date: {today}"
+                 ---\n"""
+             ).format(today)
+            f.write(to_write)
         print(good('Created %s.') % (os.path.join(PAGES_PATH, head, tail)))
 
 
@@ -193,7 +196,7 @@ def server():
     os.chdir(os.path.join(os.getcwd(), BUILD_PATH))
     try:
         with socketserver.TCPServer(('', PORT), handler) as httpd:
-            print(run(f'Serving the {italic(cyan("build"))} directory at {yellow(f"http://localhost:{PORT}")}'))
+            print(run('Serving the {italic} directory at {yellow}'.format(italic(cyan("build"), yellow("http://localhost:{PORT}")))))
             print(white('Ctrl+C') + ' to stop.')
             httpd.serve_forever()
     except KeyboardInterrupt:

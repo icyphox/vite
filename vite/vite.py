@@ -67,12 +67,12 @@ def create_path(path):
     else:
         with open(os.path.join(PAGES_PATH, head, tail), 'w') as f:
             to_write = (
-                 """---
-                 template
-                 title:"
-                 date: {today}"
-                 ---\n"""
-             ).format(today)
+"""---
+template
+title:"
+date: {t}"
+---\n"""
+             ).format(t=today)
             f.write(to_write)
         print(good('Created %s.') % (os.path.join(PAGES_PATH, head, tail)))
 

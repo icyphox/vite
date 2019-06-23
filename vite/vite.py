@@ -139,7 +139,7 @@ def fm_template(metadata):
 
 
 def markdown_render(filename):
-    html = markdown_path(os.path.join(PAGES_PATH, filename), extras=['metadata', 'fenced-code-blocks'])
+    html = markdown_path(os.path.join(PAGES_PATH, filename), extras=['metadata', 'fenced-code-blocks', 'header-ids', 'footnotes', 'smarty-pants'])
     return html
 
 

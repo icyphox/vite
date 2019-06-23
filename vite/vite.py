@@ -68,9 +68,10 @@ def create_path(path):
         with open(os.path.join(PAGES_PATH, head, tail), 'w') as f:
             to_write = (
 """---
-template
-title:"
-date: {t}"
+template:
+title:
+subtitle:
+date: {t}
 ---\n"""
              ).format(t=today)
             f.write(to_write)

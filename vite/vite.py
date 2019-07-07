@@ -16,6 +16,7 @@ import datetime
 
 from markdown2 import markdown_path
 from huepy import *
+from livereload import Server
 
 
 # constants
@@ -193,16 +194,15 @@ def html_gen():
 
 
 def server():
-    handler = http.server.SimpleHTTPRequestHandler
-    os.chdir(os.path.join(os.getcwd(), BUILD_PATH))
+#    handler = http.server.SimpleHTTPRequestHandler
+#    os.chdir(os.path.join(os.getcwd(), BUILD_PATH))
+    server = Server()
     try:
-        with socketserver.TCPServer(('', PORT), handler) as httpd:
-            print(run('Serving the {italic} directory at {yellow}'.format(italic(cyan("build"), yellow("http://localhost:{PORT}")))))
-            print(white('Ctrl+C') + ' to stop.')
-            httpd.serve_forever()
+        print(run(f'Serving the {italic(yellow("build"))} directory at {white(f"http://localhost:{PORT}")}'))
+        print(white('Ctrl+C') + ' to stop.')
+        server.serve(port=PORT, root='build/')
     except KeyboardInterrupt:
         print(info('Stopping server.'))
-        httpd.socket.close()
         sys.exit(1)
 
 

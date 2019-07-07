@@ -1,11 +1,6 @@
 # vite
 > A simple and mnml static site generator that Just Works™
 
-[![forthebadge](https://forthebadge.com/images/badges/60-percent-of-the-time-works-every-time.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/made-with-python.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/powered-by-electricity.svg)](https://forthebadge.com)
-[![forthebadge](https://forthebadge.com/images/badges/uses-git.svg)](https://forthebadge.com)
-
 <h1 align="center">
     <img width="750" src="https://0x0.st/swPG.png" alt="Vite demo">
 </h1>

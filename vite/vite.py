@@ -57,7 +57,7 @@ def create_project(path):
 def create_path(path):
     head, tail = os.path.split(path)
     now = datetime.datetime.now()
-    today = now.strftime('%d %B, %Y')
+    today = now.strftime('%Y-%m-%d')
 
     try:
         os.makedirs(os.path.join(PAGES_PATH, head))

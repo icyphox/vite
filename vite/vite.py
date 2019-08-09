@@ -17,6 +17,7 @@ import datetime
 from markdown2 import markdown_path
 from huepy import *
 from livereload import Server
+from subprocess import call
 
 
 # constants
@@ -87,6 +88,7 @@ title = ''
 author = ''
 header = ''
 footer = '' 
+post_build = []
 template = 'index.html'  # default is index.html\n""")
 
 
@@ -230,3 +232,12 @@ def builder():
         if os.path.exists(os.path.join(os.getcwd(), 'static')):
             shutil.copytree(os.path.join(os.getcwd(), 'static'), os.path.join(BUILD_PATH, 'static'))
         print(good('Done in %0.5fs.' % (time.process_time() - start)))
+        try:
+            if config.post_build != '':
+                print(run('Running post-build actions...'))
+                for s in config.post_build:
+                    print(info(f'{s}'))
+                    call([s])
+        except AttributeError:
+            pass
+

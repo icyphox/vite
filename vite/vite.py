@@ -157,6 +157,7 @@ def markdown_render(filename):
             "header-ids",
             "footnotes",
             "smarty-pants",
+            "tables",
         ],
     )
     return html

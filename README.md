@@ -95,10 +95,6 @@ Directory tree
     └── templates
         └── index.html
 
-Example Sites
---------------
-[Personal Site](https://icyphox.sh/) | [(Git)](https://github.com/icyphox/site)
-
 TODO
 ----
 

@@ -1,10 +1,6 @@
 # vite
 > A simple and mnml static site generator that Just Works™
 
-<h1 align="center">
-    <img width="750" src="https://0x0.st/swPG.png" alt="Vite demo">
-</h1>
-
 Installation
 ------------
 

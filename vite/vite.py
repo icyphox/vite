@@ -1,8 +1,6 @@
-"""
-Vite - A simple and minimal static site generator that JustWorks™
-Author: Anirudh <icyph0x@pm.me>
-License: MIT
-"""
+# vite - a simple and minimal static site generator, that JustWorks™
+# Copyright (c) 2019 Anirudh Oppiliappan <x@icyphox.sh>
+# Licensed under the MIT license
 
 import sys
 import pathlib

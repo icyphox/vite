@@ -5,8 +5,11 @@ Installation
 ------------
 
 ```console
-$ pip install vite
+$ pip install git+https://github.com/icyphox/vite
 ```
+Note: the PyPI version is out of date, and likely won't be updated.
+I can't be bothered.
+
 Usage
 -----
 

@@ -1,5 +1,5 @@
-Jinja2==2.10.1
-markdown2==2.3.6
-MarkupSafe==1.0
+Jinja2
+markdown2
+MarkupSafe
 livereload
 huepy

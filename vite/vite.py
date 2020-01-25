@@ -58,6 +58,7 @@ def create_path(path):
     head, tail = os.path.split(path)
     now = datetime.datetime.now()
     today = now.strftime("%Y-%m-%d")
+    url = os.path.splitext(os.path.basename(path))[0]
 
     try:
         os.makedirs(os.path.join(PAGES_PATH, head))
@@ -70,11 +71,12 @@ def create_path(path):
             to_write = (
                 """---
 template:
+url: {u}
 title:
 subtitle:
 date: {t}
 ---\n"""
-            ).format(t=today)
+            ).format(t=today, u=url)
             f.write(to_write)
         print(good("Created %s.") % (os.path.join(PAGES_PATH, head, tail)))
 
@@ -131,6 +133,7 @@ def jinja_render(html, tmpl):
         title=meta["title"] if "title" in meta else config.title,
         author=meta["author"] if "author" in meta else config.author,
         header=meta["header"] if "header" in meta else config.header,
+        url=meta["url"] if "url" in meta else "",
         footer=meta["footer"] if "footer" in meta else config.footer,
         date=meta["date"] if "date" in meta else "",
         subtitle=meta["subtitle"] if "subtitle" in meta else "",
@@ -239,15 +242,11 @@ def server():
 
 
 def clean():
-    for f in os.listdir(BUILD_PATH):
-        fpath = os.path.join(BUILD_PATH, f)
-        try:
-            if os.path.isfile(fpath):
-                os.unlink(fpath)
-            elif os.path.isdir(fpath):
-                shutil.rmtree(fpath)
-        except Exception as e:
-            print(e)
+    for root, dirs, files in os.walk(BUILD_PATH):
+        for f in files:
+            os.unlink(os.path.join(root, f))
+        for d in dirs:
+            shutil.rmtree(os.path.join(root, d))
 
 
 def builder():

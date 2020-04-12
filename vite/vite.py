@@ -25,6 +25,7 @@ BUILD_PATH = "build/"
 TEMPL_PATH = "templates/"
 TEMPL_FILE = ""
 PORT = 1911
+META = []
 
 
 def import_config():
@@ -133,8 +134,8 @@ def jinja_render(html, tmpl):
         title=meta["title"] if "title" in meta else config.title,
         author=meta["author"] if "author" in meta else config.author,
         header=meta["header"] if "header" in meta else config.header,
-        url=meta["url"] if "url" in meta else "",
         footer=meta["footer"] if "footer" in meta else config.footer,
+        url=meta["url"] if "url" in meta else "",
         date=meta["date"] if "date" in meta else "",
         subtitle=meta["subtitle"] if "subtitle" in meta else "",
         body=html,

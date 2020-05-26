@@ -262,7 +262,7 @@ def builder():
                 print(run("Running pre-build actions..."))
                 for s in config.pre_build:
                     print(info(f"{s}"))
-                    call([s])
+                    call(s)
         except AttributeError:
             pass
         clean()

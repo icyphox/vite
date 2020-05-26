@@ -90,6 +90,7 @@ title = ''
 author = ''
 header = ''
 footer = '' 
+pre_build = []
 post_build = []
 template = 'index.html'  # default is index.html\n"""
         )
@@ -252,6 +253,14 @@ def clean():
 def builder():
     path = os.getcwd()
     start = time.process_time()
+    try:
+        if config.pre_build != "":
+            print(run("Running pre-build actions..."))
+            for s in config.pre_build:
+                print(info(f"{s}"))
+                call([s])
+    except AttributeError:
+        pass
     if not os.listdir(os.path.join(path, PAGES_PATH)):
         print(info(italic("pages") + " directory is empty. Nothing to build."))
         sys.exit(1)

@@ -1,5 +1,5 @@
 # vite - a simple and minimal static site generator, that JustWorks™
-# Copyright (c) 2019 Anirudh Oppiliappan <x@icyphox.sh>
+# Copyright (c) 2020 Anirudh Oppiliappan <x@icyphox.sh>
 # Licensed under the MIT license
 
 import sys
@@ -253,18 +253,18 @@ def clean():
 def builder():
     path = os.getcwd()
     start = time.process_time()
-    try:
-        if config.pre_build != "":
-            print(run("Running pre-build actions..."))
-            for s in config.pre_build:
-                print(info(f"{s}"))
-                call([s])
-    except AttributeError:
-        pass
     if not os.listdir(os.path.join(path, PAGES_PATH)):
         print(info(italic("pages") + " directory is empty. Nothing to build."))
         sys.exit(1)
     else:
+        try:
+            if config.pre_build != "":
+                print(run("Running pre-build actions..."))
+                for s in config.pre_build:
+                    print(info(f"{s}"))
+                    call([s])
+        except AttributeError:
+            pass
         clean()
         html_gen()
         if os.path.exists(os.path.join(os.getcwd(), "static")):

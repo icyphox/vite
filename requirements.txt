@@ -1,5 +1,5 @@
 Jinja2
-markdown2
+git+https://github.com/icyphox/myrkdown
 MarkupSafe
 livereload
 huepy

@@ -6,7 +6,7 @@ with open('README.md') as f:
 
 setup(
         author='Anirudh',
-        author_email='icyph0x@pm.me',
+        author_email='x@icyphox.sh',
         long_description=long_description,
         long_description_content_type='text/markdown',
         name='vite',
@@ -16,7 +16,7 @@ setup(
         license='MIT',
         packages=['vite'],
         install_requires=[
-            'markdown2', 'Jinja2', 'huepy', 'pygments', 'livereload',
+            'myrkdown @ git+https://github.com/icyphox/myrkdown', 'Jinja2', 'huepy', 'pygments', 'livereload',
             ],
         entry_points={
             'console_scripts': [

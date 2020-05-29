@@ -13,7 +13,7 @@ import shutil
 import datetime
 import re
 
-from markdown2 import markdown_path
+from myrkdown import markdown_path
 from huepy import *
 from livereload import Server
 from subprocess import call

@@ -44,6 +44,7 @@ author = ''
 header = ''
 footer = '' 
 template = 'index.html'  # default is templates/index.html
+pre_build = []           # list of commands to run pre-build
 post_build = []          # list of commands to run post-build
 ```
 
@@ -73,6 +74,7 @@ Vite allows for specifying a unique template, per page. This is acheived by incl
 template: foo.html
 title: Some fancy buzzwords here
 subtitle: Cool catch phrase here
+url: my-post
 date: 2019-08-09
 ---
 

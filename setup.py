@@ -1,7 +1,7 @@
 from setuptools import setup
 from vite import __version__
 
-with open('README.md') as f:
+with open('readme.md') as f:
     long_description = f.read()
 
 setup(

@@ -271,7 +271,6 @@ def builder():
             shutil.copytree(
                 os.path.join(os.getcwd(), "static"), os.path.join(BUILD_PATH, "static")
             )
-        print(good("Done in %0.5fs." % (time.process_time() - start)))
         try:
             if config.post_build != "":
                 print(run("Running post-build actions..."))
@@ -280,3 +279,6 @@ def builder():
                     call([s])
         except AttributeError:
             pass
+
+        print(good("Done in %0.5fs." % (time.process_time() - start)))
+

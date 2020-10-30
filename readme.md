@@ -1,6 +1,9 @@
 # vite
 > A simple and mnml static site generator that Just Works™
 
+**NOTE**: Ths project has been superseded by
+[go-vite](/icyphox/go-vite).
+
 Installation
 ------------
 

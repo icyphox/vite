@@ -1,0 +1,315 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+<meta http-equiv="content-type" content="text/html; charset=UTF-8">
+<title>~/code/vite/vite/vite.py.html</title>
+<meta name="Generator" content="Vim/8.0">
+<meta name="plugin-version" content="vim8.1_v1">
+<meta name="syntax" content="python">
+<meta name="settings" content="use_css,no_foldcolumn,expand_tabs,prevent_copy=">
+<meta name="colorscheme" content="darkblue">
+<style type="text/css">
+<!--
+pre { font-family: monospace; color: #a8a8a8; background-color: #000000; }
+body { font-family: monospace; color: #a8a8a8; background-color: #000000; }
+* { font-size: 1em; }
+.Type { color: #00ff00; }
+.Identifier { color: #00ffff; }
+.Statement { color: #ffff00; }
+.PreProc { color: #ff40ff; }
+.Comment { color: #c00000; }
+.Constant { color: #ff40ff; }
+.Special { color: #af5f00; }
+-->
+</style>
+</head>
+<body>
+<pre id='vimCodeElement'>
+<span class="Comment"># vite - a simple and minimal static site generator, that JustWorks™</span>
+<span class="Comment"># Copyright (c) 2020 Anirudh Oppiliappan &lt;x@icyphox.sh&gt;</span>
+<span class="Comment"># Licensed under the MIT license</span>
+
+<span class="PreProc">import</span> sys
+<span class="PreProc">import</span> pathlib
+<span class="PreProc">import</span> os
+<span class="PreProc">import</span> jinja2
+<span class="PreProc">import</span> time
+<span class="PreProc">import</span> http.server
+<span class="PreProc">import</span> socketserver
+<span class="PreProc">import</span> shutil
+<span class="PreProc">import</span> datetime
+<span class="PreProc">import</span> re
+
+<span class="PreProc">from</span> myrkdown <span class="PreProc">import</span> markdown_path
+<span class="PreProc">from</span> huepy <span class="PreProc">import</span> *
+<span class="PreProc">from</span> livereload <span class="PreProc">import</span> Server
+<span class="PreProc">from</span> subprocess <span class="PreProc">import</span> call
+
+
+<span class="Comment"># constants</span>
+PAGES_PATH = <span class="Constant">&quot;</span><span class="Constant">pages/</span><span class="Constant">&quot;</span>
+BUILD_PATH = <span class="Constant">&quot;</span><span class="Constant">build/</span><span class="Constant">&quot;</span>
+TEMPL_PATH = <span class="Constant">&quot;</span><span class="Constant">templates/</span><span class="Constant">&quot;</span>
+TEMPL_FILE = <span class="Constant">&quot;&quot;</span>
+PORT = <span class="Constant">1911</span>
+
+
+<span class="Statement">def</span> <span class="Identifier">import_config</span>():
+    <span class="Statement">try</span>:
+        sys.path.append(os.getcwd())
+        <span class="Identifier">globals</span>()[<span class="Constant">&quot;</span><span class="Constant">config</span><span class="Constant">&quot;</span>] = <span class="Identifier">__import__</span>(<span class="Constant">&quot;</span><span class="Constant">config</span><span class="Constant">&quot;</span>)
+        <span class="Statement">global</span> TEMPL_FILE
+        TEMPL_FILE = os.path.join(TEMPL_PATH, config.template)
+    <span class="Statement">except</span> <span class="Type">ImportError</span>:
+        <span class="Identifier">print</span>(bad(<span class="Constant">&quot;</span><span class="Constant">Error: config.py not found.</span><span class="Constant">&quot;</span>))
+        <span class="Identifier">print</span>(que(<span class="Constant">&quot;</span><span class="Constant">Are you sure you're in a project directory?</span><span class="Constant">&quot;</span>))
+        sys.exit(<span class="Constant">1</span>)
+
+
+<span class="Statement">def</span> <span class="Identifier">create_project</span>(path):
+    <span class="Statement">try</span>:
+        abs_path = pathlib.Path(path).resolve()
+        cur_path = pathlib.Path(<span class="Constant">&quot;</span><span class="Constant">.</span><span class="Constant">&quot;</span>).resolve()
+        os.makedirs(os.path.join(path, <span class="Constant">&quot;</span><span class="Constant">build</span><span class="Constant">&quot;</span>))
+        os.mkdir(os.path.join(path, <span class="Constant">&quot;</span><span class="Constant">pages</span><span class="Constant">&quot;</span>))
+        os.mkdir(os.path.join(path, <span class="Constant">&quot;</span><span class="Constant">templates</span><span class="Constant">&quot;</span>))
+        os.mkdir(os.path.join(path, <span class="Constant">&quot;</span><span class="Constant">static</span><span class="Constant">&quot;</span>))
+        create_config(path)
+        create_template(path)
+        <span class="Identifier">print</span>(good(<span class="Constant">&quot;</span><span class="Constant">Created project directory at %s.</span><span class="Constant">&quot;</span> % (abs_path)))
+    <span class="Statement">except</span> <span class="Type">FileExistsError</span>:
+        <span class="Identifier">print</span>(bad(<span class="Constant">&quot;</span><span class="Constant">Error: specified path exists.</span><span class="Constant">&quot;</span>))
+
+
+<span class="Statement">def</span> <span class="Identifier">create_path</span>(path):
+    head, tail = os.path.split(path)
+    now = datetime.datetime.now()
+    today = now.strftime(<span class="Constant">&quot;</span><span class="Constant">%Y-%m-%d</span><span class="Constant">&quot;</span>)
+    url = os.path.splitext(os.path.basename(path))[<span class="Constant">0</span>]
+
+    <span class="Statement">try</span>:
+        os.makedirs(os.path.join(PAGES_PATH, head))
+    <span class="Statement">except</span> <span class="Type">FileExistsError</span>:
+        <span class="Statement">pass</span>
+    <span class="Statement">if</span> os.path.exists(os.path.join(PAGES_PATH, head, tail)):
+        <span class="Identifier">print</span>(bad(<span class="Constant">&quot;</span><span class="Constant">Error: specified path exists.</span><span class="Constant">&quot;</span>))
+    <span class="Statement">else</span>:
+        <span class="Statement">with</span> <span class="Identifier">open</span>(os.path.join(PAGES_PATH, head, tail), <span class="Constant">&quot;</span><span class="Constant">w</span><span class="Constant">&quot;</span>) <span class="Statement">as</span> f:
+            to_write = (
+                <span class="Constant">&quot;&quot;&quot;</span><span class="Constant">---</span>
+<span class="Constant">template:</span>
+<span class="Constant">url: {u}</span>
+<span class="Constant">title:</span>
+<span class="Constant">subtitle:</span>
+<span class="Constant">date: {t}</span>
+<span class="Constant">---</span><span class="Special">\n</span><span class="Constant">&quot;&quot;&quot;</span>
+            ).format(t=today, u=url)
+            f.write(to_write)
+        <span class="Identifier">print</span>(good(<span class="Constant">&quot;</span><span class="Constant">Created %s.</span><span class="Constant">&quot;</span>) % (os.path.join(PAGES_PATH, head, tail)))
+
+
+<span class="Statement">def</span> <span class="Identifier">create_config</span>(path):
+    <span class="Statement">with</span> <span class="Identifier">open</span>(os.path.join(path, <span class="Constant">&quot;</span><span class="Constant">config.py</span><span class="Constant">&quot;</span>), <span class="Constant">&quot;</span><span class="Constant">w</span><span class="Constant">&quot;</span>) <span class="Statement">as</span> f:
+        f.write(
+            <span class="Constant">&quot;&quot;&quot;</span><span class="Constant"># config.py - Vite's configuration script</span>
+
+<span class="Constant">title = ''</span>
+<span class="Constant">author = ''</span>
+<span class="Constant">header = ''</span>
+<span class="Constant">footer = '' </span>
+<span class="Constant">pre_build = []</span>
+<span class="Constant">post_build = []</span>
+<span class="Constant">template = 'index.html'  # default is index.html</span><span class="Special">\n</span><span class="Constant">&quot;&quot;&quot;</span>
+        )
+
+
+<span class="Statement">def</span> <span class="Identifier">create_template</span>(path):
+    <span class="Statement">with</span> <span class="Identifier">open</span>(os.path.join(path, <span class="Constant">&quot;</span><span class="Constant">templates</span><span class="Constant">&quot;</span>, <span class="Constant">&quot;</span><span class="Constant">index.html</span><span class="Constant">&quot;</span>), <span class="Constant">&quot;</span><span class="Constant">w</span><span class="Constant">&quot;</span>) <span class="Statement">as</span> f:
+        f.write(
+            <span class="Constant">&quot;&quot;&quot;</span><span class="Constant">&lt;!DOCTYPE html&gt;</span>
+<span class="Constant">&lt;html&gt;</span>
+<span class="Constant">&lt;header&gt;</span>
+<span class="Constant">        {{ header }}</span>
+<span class="Constant">        &lt;title&gt;</span>
+<span class="Constant">                {{ title }}     </span>
+<span class="Constant">        &lt;/title&gt;</span>
+<span class="Constant">&lt;/header&gt;</span>
+
+<span class="Constant">&lt;body&gt;</span>
+<span class="Constant">        {{ body }}</span>
+<span class="Constant">&lt;/body&gt;</span>
+
+<span class="Constant">&lt;footer&gt;</span>
+<span class="Constant">        {{ footer }}</span>
+<span class="Constant">        &lt;p&gt; {{ author }} &lt;/p&gt;</span>
+<span class="Constant">&lt;footer&gt;</span>
+
+<span class="Constant">                </span><span class="Constant">&quot;&quot;&quot;</span>
+        )
+
+
+<span class="Comment"># jinja2</span>
+<span class="Statement">def</span> <span class="Identifier">jinja_render</span>(html, tmpl):
+    template_loader = jinja2.FileSystemLoader(<span class="Constant">&quot;</span><span class="Constant">./</span><span class="Constant">&quot;</span>)
+    env = jinja2.Environment(loader=template_loader)
+    <span class="Statement">try</span>:
+        template = env.get_template(tmpl)
+    <span class="Statement">except</span> jinja2.exceptions.TemplateNotFound:
+        template = env.get_template(TEMPL_FILE)
+    meta = html.metadata
+    output = template.render(
+        title=meta[<span class="Constant">&quot;</span><span class="Constant">title</span><span class="Constant">&quot;</span>] <span class="Statement">if</span> <span class="Constant">&quot;</span><span class="Constant">title</span><span class="Constant">&quot;</span> <span class="Statement">in</span> meta <span class="Statement">else</span> config.title,
+        author=meta[<span class="Constant">&quot;</span><span class="Constant">author</span><span class="Constant">&quot;</span>] <span class="Statement">if</span> <span class="Constant">&quot;</span><span class="Constant">author</span><span class="Constant">&quot;</span> <span class="Statement">in</span> meta <span class="Statement">else</span> config.author,
+        header=meta[<span class="Constant">&quot;</span><span class="Constant">header</span><span class="Constant">&quot;</span>] <span class="Statement">if</span> <span class="Constant">&quot;</span><span class="Constant">header</span><span class="Constant">&quot;</span> <span class="Statement">in</span> meta <span class="Statement">else</span> config.header,
+        url=meta[<span class="Constant">&quot;</span><span class="Constant">url</span><span class="Constant">&quot;</span>] <span class="Statement">if</span> <span class="Constant">&quot;</span><span class="Constant">url</span><span class="Constant">&quot;</span> <span class="Statement">in</span> meta <span class="Statement">else</span> <span class="Constant">&quot;&quot;</span>,
+        footer=meta[<span class="Constant">&quot;</span><span class="Constant">footer</span><span class="Constant">&quot;</span>] <span class="Statement">if</span> <span class="Constant">&quot;</span><span class="Constant">footer</span><span class="Constant">&quot;</span> <span class="Statement">in</span> meta <span class="Statement">else</span> config.footer,
+        date=meta[<span class="Constant">&quot;</span><span class="Constant">date</span><span class="Constant">&quot;</span>] <span class="Statement">if</span> <span class="Constant">&quot;</span><span class="Constant">date</span><span class="Constant">&quot;</span> <span class="Statement">in</span> meta <span class="Statement">else</span> <span class="Constant">&quot;&quot;</span>,
+        subtitle=meta[<span class="Constant">&quot;</span><span class="Constant">subtitle</span><span class="Constant">&quot;</span>] <span class="Statement">if</span> <span class="Constant">&quot;</span><span class="Constant">subtitle</span><span class="Constant">&quot;</span> <span class="Statement">in</span> meta <span class="Statement">else</span> <span class="Constant">&quot;&quot;</span>,
+        body=html,
+    )
+    <span class="Statement">return</span> output
+
+
+<span class="Statement">def</span> <span class="Identifier">fm_template</span>(metadata):
+    <span class="Statement">try</span>:
+        page_template = os.path.join(os.path.join(TEMPL_PATH, metadata[<span class="Constant">&quot;</span><span class="Constant">template</span><span class="Constant">&quot;</span>]))
+    <span class="Statement">except</span> <span class="Type">KeyError</span>:
+        page_template = TEMPL_FILE
+    <span class="Statement">return</span> page_template
+
+
+<span class="Statement">def</span> <span class="Identifier">markdown_render</span>(filename):
+    html = markdown_path(
+        os.path.join(PAGES_PATH, filename),
+        extras=[
+            <span class="Constant">&quot;</span><span class="Constant">metadata</span><span class="Constant">&quot;</span>,
+            <span class="Constant">&quot;</span><span class="Constant">fenced-code-blocks</span><span class="Constant">&quot;</span>,
+            <span class="Constant">&quot;</span><span class="Constant">header-ids</span><span class="Constant">&quot;</span>,
+            <span class="Constant">&quot;</span><span class="Constant">footnotes</span><span class="Constant">&quot;</span>,
+            <span class="Constant">&quot;</span><span class="Constant">smarty-pants</span><span class="Constant">&quot;</span>,
+            <span class="Constant">&quot;</span><span class="Constant">tables</span><span class="Constant">&quot;</span>,
+            <span class="Constant">&quot;</span><span class="Constant">link-patterns</span><span class="Constant">&quot;</span>,
+        ],
+        link_patterns=[
+            (
+                re.compile(
+                    <span class="Constant">r&quot;</span><span class="Constant">((([A-Za-z]{3,9}:(?:\/\/)?)(?:[\-;:&amp;=\+\$,\w]+@)?[A-Za-z0-9\.\-]+(:[0-9]+)?|(?:www\.|[\-;:&amp;=\+\$,\w]+@)[A-Za-z0-9\.\-]+)((?:\/[\+~%\/\.\w\-_]*)?\??(?:[\-\+=&amp;;%@\.\w_]*)#?(?:[\.\!\/\\\w]*))?)</span><span class="Constant">&quot;</span>
+                ),
+                <span class="Constant">r&quot;</span><span class="Constant">\1</span><span class="Constant">&quot;</span>,
+            )
+        ],
+    )
+    <span class="Statement">return</span> html
+
+
+<span class="Statement">def</span> <span class="Identifier">html_gen</span>():
+    <span class="Statement">def</span> <span class="Identifier">index_render</span>(f, d=<span class="Constant">&quot;&quot;</span>):
+        index_html = markdown_render(os.path.join(d, f))
+        output = jinja_render(index_html, fm_template(index_html.metadata))
+        <span class="Statement">with</span> <span class="Identifier">open</span>(os.path.join(BUILD_PATH, d, <span class="Constant">&quot;</span><span class="Constant">index.html</span><span class="Constant">&quot;</span>), <span class="Constant">&quot;</span><span class="Constant">w</span><span class="Constant">&quot;</span>) <span class="Statement">as</span> ff:
+            ff.write(output)
+            <span class="Statement">if</span> d:
+                <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Rendered </span><span class="Constant">&quot;</span> + white(<span class="Constant">&quot;</span><span class="Constant">%s/%s</span><span class="Constant">&quot;</span>) % (d, f)))
+            <span class="Statement">else</span>:
+                <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Rendered </span><span class="Constant">&quot;</span> + white(<span class="Constant">&quot;</span><span class="Constant">%s</span><span class="Constant">&quot;</span>) % (f)))
+
+    <span class="Statement">def</span> <span class="Identifier">normal_render</span>(f, d=<span class="Constant">&quot;&quot;</span>):
+        html_text = markdown_render(os.path.join(d, f))
+        html_file = os.path.splitext(os.path.join(BUILD_PATH, d, f))[<span class="Constant">0</span>]
+        os.mkdir(html_file)
+        output = jinja_render(html_text, fm_template(html_text.metadata))
+        <span class="Statement">with</span> <span class="Identifier">open</span>(os.path.join(html_file, <span class="Constant">&quot;</span><span class="Constant">index.html</span><span class="Constant">&quot;</span>), <span class="Constant">&quot;</span><span class="Constant">w</span><span class="Constant">&quot;</span>) <span class="Statement">as</span> ff:
+            ff.write(output)
+            <span class="Statement">if</span> d:
+                <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Rendered </span><span class="Constant">&quot;</span> + white(<span class="Constant">&quot;</span><span class="Constant">%s/%s</span><span class="Constant">&quot;</span>) % (d, f)))
+            <span class="Statement">else</span>:
+                <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Rendered </span><span class="Constant">&quot;</span> + white(<span class="Constant">&quot;</span><span class="Constant">%s</span><span class="Constant">&quot;</span>) % (f)))
+
+    <span class="Statement">for</span> root, dirs, files <span class="Statement">in</span> os.walk(PAGES_PATH):
+        <span class="Statement">for</span> d <span class="Statement">in</span> dirs:
+            os.mkdir(os.path.join(BUILD_PATH, d))
+            <span class="Statement">for</span> f <span class="Statement">in</span> os.listdir(os.path.join(PAGES_PATH, d)):
+                <span class="Statement">if</span> os.path.splitext(f)[<span class="Constant">1</span>] != <span class="Constant">&quot;</span><span class="Constant">.md</span><span class="Constant">&quot;</span>:
+                    shutil.copyfile(
+                        os.path.join(PAGES_PATH, d, f), os.path.join(BUILD_PATH, d, f)
+                    )
+                    <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Copied </span><span class="Constant">&quot;</span> + white(<span class="Constant">&quot;</span><span class="Constant">%s/%s</span><span class="Constant">&quot;</span>) % (d, f)))
+                <span class="Statement">elif</span> f == <span class="Constant">&quot;</span><span class="Constant">_index.md</span><span class="Constant">&quot;</span>:
+                    index_render(f, d)
+                <span class="Statement">else</span>:
+                    normal_render(f, d)
+
+    <span class="Statement">for</span> f <span class="Statement">in</span> os.listdir(PAGES_PATH):
+        <span class="Statement">if</span> os.path.isfile(os.path.join(PAGES_PATH, f)):
+            <span class="Statement">if</span> os.path.splitext(f)[<span class="Constant">1</span>] != <span class="Constant">&quot;</span><span class="Constant">.md</span><span class="Constant">&quot;</span>:
+                shutil.copyfile(
+                    os.path.join(PAGES_PATH, f), os.path.join(BUILD_PATH, f)
+                )
+                <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Copied </span><span class="Constant">&quot;</span> + white(<span class="Constant">&quot;</span><span class="Constant">%s</span><span class="Constant">&quot;</span>) % (f)))
+            <span class="Statement">elif</span> f == <span class="Constant">&quot;</span><span class="Constant">_index.md</span><span class="Constant">&quot;</span>:
+                index_render(f)
+            <span class="Statement">else</span>:
+                normal_render(f)
+
+
+<span class="Statement">def</span> <span class="Identifier">server</span>():
+    <span class="Comment">#    handler = http.server.SimpleHTTPRequestHandler</span>
+    <span class="Comment">#    os.chdir(os.path.join(os.getcwd(), BUILD_PATH))</span>
+    server = Server()
+    <span class="Statement">try</span>:
+        <span class="Identifier">print</span>(
+            run(
+                f<span class="Constant">'</span><span class="Constant">Serving the {italic(yellow(&quot;build&quot;))} directory at {white(f&quot;<a href="http://localhost:{PORT}">http://localhost:{PORT}</a>&quot;)}</span><span class="Constant">'</span>
+            )
+        )
+        <span class="Identifier">print</span>(white(<span class="Constant">&quot;</span><span class="Constant">Ctrl+C</span><span class="Constant">&quot;</span>) + <span class="Constant">&quot;</span><span class="Constant"> to stop.</span><span class="Constant">&quot;</span>)
+        server.serve(port=PORT, root=<span class="Constant">&quot;</span><span class="Constant">build/</span><span class="Constant">&quot;</span>)
+    <span class="Statement">except</span> <span class="Type">KeyboardInterrupt</span>:
+        <span class="Identifier">print</span>(info(<span class="Constant">&quot;</span><span class="Constant">Stopping server.</span><span class="Constant">&quot;</span>))
+        sys.exit(<span class="Constant">1</span>)
+
+
+<span class="Statement">def</span> <span class="Identifier">clean</span>():
+    <span class="Statement">for</span> root, dirs, files <span class="Statement">in</span> os.walk(BUILD_PATH):
+        <span class="Statement">for</span> f <span class="Statement">in</span> files:
+            os.unlink(os.path.join(root, f))
+        <span class="Statement">for</span> d <span class="Statement">in</span> dirs:
+            shutil.rmtree(os.path.join(root, d))
+
+
+<span class="Statement">def</span> <span class="Identifier">builder</span>():
+    path = os.getcwd()
+    start = time.process_time()
+    <span class="Statement">if</span> <span class="Statement">not</span> os.listdir(os.path.join(path, PAGES_PATH)):
+        <span class="Identifier">print</span>(info(italic(<span class="Constant">&quot;</span><span class="Constant">pages</span><span class="Constant">&quot;</span>) + <span class="Constant">&quot;</span><span class="Constant"> directory is empty. Nothing to build.</span><span class="Constant">&quot;</span>))
+        sys.exit(<span class="Constant">1</span>)
+    <span class="Statement">else</span>:
+        <span class="Statement">try</span>:
+            <span class="Statement">if</span> config.pre_build != <span class="Constant">&quot;&quot;</span>:
+                <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Running pre-build actions...</span><span class="Constant">&quot;</span>))
+                <span class="Statement">for</span> s <span class="Statement">in</span> config.pre_build:
+                    <span class="Identifier">print</span>(info(f<span class="Constant">&quot;</span><span class="Constant">{s}</span><span class="Constant">&quot;</span>))
+                    call(s)
+        <span class="Statement">except</span> <span class="Type">AttributeError</span>:
+            <span class="Statement">pass</span>
+        clean()
+        html_gen()
+        <span class="Statement">if</span> os.path.exists(os.path.join(os.getcwd(), <span class="Constant">&quot;</span><span class="Constant">static</span><span class="Constant">&quot;</span>)):
+            shutil.copytree(
+                os.path.join(os.getcwd(), <span class="Constant">&quot;</span><span class="Constant">static</span><span class="Constant">&quot;</span>), os.path.join(BUILD_PATH, <span class="Constant">&quot;</span><span class="Constant">static</span><span class="Constant">&quot;</span>)
+            )
+        <span class="Statement">try</span>:
+            <span class="Statement">if</span> config.post_build != <span class="Constant">&quot;&quot;</span>:
+                <span class="Identifier">print</span>(run(<span class="Constant">&quot;</span><span class="Constant">Running post-build actions...</span><span class="Constant">&quot;</span>))
+                <span class="Statement">for</span> s <span class="Statement">in</span> config.post_build:
+                    <span class="Identifier">print</span>(info(f<span class="Constant">&quot;</span><span class="Constant">{s}</span><span class="Constant">&quot;</span>))
+                    call([s])
+        <span class="Statement">except</span> <span class="Type">AttributeError</span>:
+            <span class="Statement">pass</span>
+
+        <span class="Identifier">print</span>(good(<span class="Constant">&quot;</span><span class="Constant">Done in %0.5fs.</span><span class="Constant">&quot;</span> % (time.process_time() - start)))
+
+</pre>
+</body>
+</html>
+<!-- vim: set foldmethod=manual : -->

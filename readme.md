@@ -2,7 +2,7 @@
 > A simple and mnml static site generator that Just Works™
 
 **NOTE**: Ths project has been superseded by
-[go-vite](/icyphox/go-vite).
+[go-vite](https://github.com/icyphox/go-vite).
 
 Installation
 ------------
